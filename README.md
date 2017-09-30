@@ -1,1 +1,1 @@
-# alg
+# algorithms collection
