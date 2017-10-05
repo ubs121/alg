@@ -1,27 +1,51 @@
+package alg
+
 // Union Find structure
 type UF struct {
-	id []int
+	id []int // parent reference tree
+	sz []int // number of members
 }
 
-func createUF(dim int) *UF {
+// make set
+func MakeSet(dim int) *UF {
 	uf := new(UF)
 	uf.id = make([]int, dim)
+	uf.sz = make([]int, dim)
+
+	for i := 0; i < dim; i++ {
+		uf.id[i] = i
+	}
 	return uf
 }
 
-func (u *UF) root(p int) int {
+// find root of p
+func (u *UF) Root(p int) int {
 	for p != u.id[p] {
+		u.id[p] = u.id[u.id[p]] // Make every other node in path point to its grandparent (thereby halving path length)
 		p = u.id[p]
 	}
 	return p
 }
 
-func (u *UF) connected(p, q int) bool {
-	return u.root(p) == u.root(q)
+// check if p and q connected
+func (u *UF) Connected(p, q int) bool {
+	return u.Root(p) == u.Root(q)
 }
 
-func (u *UF) union(p, q int) {
-	i := u.root(p)
-	j := u.root(q)
-	u.id[i] = j
+// connect p & q
+func (u *UF) Union(p, q int) {
+	i := u.Root(p)
+	j := u.Root(q)
+
+	if i == j {
+		return
+	}
+
+	if u.sz[i] < u.sz[j] {
+		u.id[i] = j
+		u.sz[j] += u.sz[i]
+	} else {
+		u.id[j] = i
+		u.sz[i] += u.sz[j]
+	}
 }
