@@ -1,24 +1,25 @@
-package alg
+package graph
 
-// Union Find structure
+// UF is a Union Find structure
 type UF struct {
 	id []int // parent reference tree
 	sz []int // number of members
 }
 
-// make set
-func MakeSet(dim int) *UF {
+// MakeUF makes a new Union Find structure
+func MakeUF(dim int) *UF {
 	uf := new(UF)
 	uf.id = make([]int, dim)
 	uf.sz = make([]int, dim)
 
 	for i := 0; i < dim; i++ {
 		uf.id[i] = i
+		uf.sz[i] = 1
 	}
 	return uf
 }
 
-// find root of p
+// Root finds a root of p
 func (u *UF) Root(p int) int {
 	for p != u.id[p] {
 		u.id[p] = u.id[u.id[p]] // Make every other node in path point to its grandparent (thereby halving path length)
@@ -27,12 +28,12 @@ func (u *UF) Root(p int) int {
 	return p
 }
 
-// check if p and q connected
+// Connected checks if p and q are connected.
 func (u *UF) Connected(p, q int) bool {
 	return u.Root(p) == u.Root(q)
 }
 
-// connect p & q
+// Union connects p & q.
 func (u *UF) Union(p, q int) {
 	i := u.Root(p)
 	j := u.Root(q)
@@ -48,4 +49,14 @@ func (u *UF) Union(p, q int) {
 		u.id[j] = i
 		u.sz[i] += u.sz[j]
 	}
+}
+
+func (u *UF) components() map[int]int {
+	cmap := make(map[int]int) // component id :-> component size
+	r := 0
+	for i := 0; i < len(u.id); i++ {
+		r = u.Root(i)
+		cmap[r] = u.sz[r]
+	}
+	return cmap
 }

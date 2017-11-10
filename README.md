@@ -1,1 +1,1 @@
-# algorithms collection
+# Algorithms &  utility collection in Golang

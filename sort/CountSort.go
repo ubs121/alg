@@ -1,4 +1,4 @@
-package alg
+package sort
 
 /**
 * 	A -  array of integers
@@ -18,7 +18,7 @@ func countingSort(A []int, l, r int) {
 
 	// i-1 тоо хэдэн удаа байгааг тоолох
 	for i := 1; i < len(C); i++ {
-		C[i] = C[i] + C[i-1] // FIXME: энд алдаа байна !!!
+		C[i] += C[i-1] // FIXME: энд алдаа байна !!!
 	}
 
 	// тоонуудыг байрлуулах

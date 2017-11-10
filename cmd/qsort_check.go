@@ -1,6 +1,7 @@
 package main
 
 import (
+	"alg/sort"
 	"bufio"
 	"fmt"
 	"os"
@@ -25,7 +26,7 @@ func main() {
 	}
 
 	/* массивыг эрэмбэлэх */
-	QuickSort(0, n-1)
+	sort.QuickSort(array[:], 0, n-1)
 
 	/* эрэмбэлэгдсэн  массивыг хэвлэж харуулах */
 	for i := 0; i < n; i++ {
