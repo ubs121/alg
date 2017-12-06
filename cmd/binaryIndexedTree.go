@@ -38,8 +38,8 @@ func main() {
 
 	// freq[3] += 1
 	update(biTree, n, 3, 1)
-	// freq[2] += 1
-	update(biTree, n, 2, 1)
+	// freq[3] += 1
+	update(biTree, n, 3, 1)
 
-	fmt.Printf("Sum of elements in arr[0..5] after update is %d\n", sum(biTree, 5))
+	fmt.Printf("Sum of elements in arr[0..5] after update is %d\n", sum(biTree, 3))
 }
