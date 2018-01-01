@@ -8,6 +8,7 @@ public class Percolation {
     private final int size;
     private boolean[] open; // open[i] - is site 'i' open?
     private final WeightedQuickUnionUF grid;
+    private final WeightedQuickUnionUF grid2;
     private int openCount;
     private boolean percolated;
     private int lastSite;
@@ -27,6 +28,7 @@ public class Percolation {
         this.openCount = 0;
         this.open = new boolean[this.end + 1];
         this.grid = new WeightedQuickUnionUF(this.end + 1);
+        this.grid2 = new WeightedQuickUnionUF(this.end + 1);
 
         this.open[start] = true;
         this.open[end] = false;
@@ -39,7 +41,7 @@ public class Percolation {
 
         // connect last row sites with 'end'
         for (int i = n * (n - 1) + 1; i < this.end; i++) {
-            grid.union(i, end);
+            grid2.union(i, end);
         }
     }
 
@@ -60,12 +62,14 @@ public class Percolation {
         }
 
         int selfId = grid.find(id); // reduces subsequent finds
+        int selfId2 = grid2.find(id);
 
         if (row > 1) {
             int top = xyTo1D(row - 1, col);
 
             if (open[top]) {
                 grid.union(selfId, top);
+                grid2.union(selfId2, top);
             }
         }
 
@@ -74,6 +78,7 @@ public class Percolation {
 
             if (open[left]) {
                 grid.union(selfId, left);
+                grid2.union(selfId2, left);
             }
         }
 
@@ -82,6 +87,7 @@ public class Percolation {
 
             if (open[bottom]) {
                 grid.union(selfId, bottom);
+                grid2.union(selfId2, bottom);
             }
         }
 
@@ -90,12 +96,18 @@ public class Percolation {
 
             if (open[right]) {
                 grid.union(selfId, right);
+                grid2.union(selfId2, right);
             }
         }
 
         this.open[id] = true; // open the site
-        lastSite = id;
+        this.lastSite = id;
         this.openCount++;
+
+        // update 'percolated'
+        if (!percolated && isFull(lastSite) && grid2.connected(lastSite, end)) {
+            percolated = true;
+        }
     }
 
     // is site (row, col) openRandom?
@@ -122,18 +134,6 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        if (percolated) {
-            return true;
-        }
-        
-        if (this.lastSite < 0) {
-            return false;
-        }
-
-        if (isFull(lastSite) && grid.connected(lastSite, end)) {
-            percolated = true;
-        }
-
         return percolated;
     }
 
@@ -148,11 +148,11 @@ public class Percolation {
         grid.open(1, 1);
         grid.open(2, 1);
         grid.open(3, 1);
-        
-        grid.open(3, 3); // backwash
-        
+
+        //grid.open(3, 3); // backwash
 
         System.out.println(grid.isFull(3, 3));
+        System.out.println(grid.percolates());
     }
 
 }
