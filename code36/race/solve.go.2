@@ -1,0 +1,195 @@
+// https://www.hackerrank.com/contests/w36/challenges/a-race-against-time
+package main
+
+import (
+	"bufio"
+	"container/heap"
+	"fmt"
+	"math"
+	"os"
+)
+
+// short path algorithm
+func minCost(sts []*Student) int {
+	n := len(sts)
+	mason := sts[0]
+	madison := sts[n-1]
+
+	// initiliaze
+	pq := make(MinQueue, 1)
+	pq[0] = mason // start with Mason
+	heap.Init(&pq)
+
+	inPq := make(map[int]bool, n)
+	inPq[mason.id] = true
+
+	distTo := make([]int, n)
+	prev := make([]int, n)
+
+	for i := 1; i < n; i++ {
+		distTo[i] = math.MaxInt32 // infinity
+		prev[i] = -1              // undefined
+	}
+
+	for pq.Len() > 0 {
+		// dequeue minimum item
+		u := pq.Pop().(*Student) //u := heap.Pop(&pq).(*Student)
+		delete(inPq, u.id)
+
+		//fmt.Printf("%v\n", u)
+
+		// find mandatory point
+		j := u.id + 1
+		for j < n && u.height >= sts[j].height {
+			j++
+		}
+
+		limit := j + 1 // mandatory handover limit
+		if j >= n {
+			limit = n
+		}
+
+		// TODO: mandatory handover limit deer zogsolt xiix uu?
+
+		// for each neighbor of 'u'
+		for j := u.id + 1; j < limit; j++ {
+			v := sts[j] // neighbor
+
+			// relaxing
+			alt := distTo[u.id] + u.costTo(v)
+			if v.id == madison.id {
+				alt = distTo[u.id] + (madison.id - u.id)
+			}
+
+			if distTo[v.id] > alt {
+				distTo[v.id] = alt
+				prev[v.id] = u.id
+
+				if inPq[v.id] {
+					// update priority
+					pq.update(v, alt)
+				} else {
+					// put in the queue & mark
+					pq.Push(v)
+					inPq[v.id] = true
+				}
+
+				//fmt.Printf("%v\n", pq)
+			}
+		}
+
+	}
+	return distTo[madison.id]
+}
+
+func main() {
+	var n, H int
+	fmt.Scanf("%d\n", &n)
+	fmt.Scanf("%d\n", &H)
+
+	sts := make([]*Student, n+1)
+	mason := &Student{id: 0, height: H, price: 0}   // mason
+	madison := &Student{id: n, height: 0, price: 0} // madison
+	sts[0] = mason
+	sts[n] = madison
+
+	reader := bufio.NewReader(os.Stdin)
+
+	// height
+	buf, _ := reader.ReadBytes('\n') // read all buffer at once
+	for i := 1; i < n; i++ {
+		sts[i] = &Student{id: i}
+		sts[i].height, buf = readInt(buf)
+	}
+
+	// price
+	buf, _ = reader.ReadBytes('\n') // read all buffer at once
+	for i := 1; i < n; i++ {
+		sts[i].price, buf = readInt(buf)
+	}
+
+	fmt.Printf("%d\n", minCost(sts))
+
+}
+
+func readInt(buf []byte) (int, []byte) {
+	i := 0
+	for i < len(buf) && ' ' == buf[i] {
+		i++
+	}
+
+	d := 0
+	neg := false
+	if buf[i] == '-' {
+		neg = true
+		i++
+	}
+
+	for i < len(buf) && '0' <= buf[i] && buf[i] <= '9' {
+		d = d*10 + int(buf[i]-'0')
+		i++
+	}
+
+	if neg {
+		d = -d
+	}
+	return d, buf[i:]
+}
+
+type Student struct {
+	id       int
+	height   int
+	price    int
+	priority int
+	index    int // The index of the item in the heap.
+}
+
+func (from *Student) costTo(to *Student) (cost int) {
+	cost = to.id - from.id + to.price
+
+	if from.height < to.height {
+		cost += to.height - from.height
+	} else {
+		cost += from.height - to.height
+	}
+	return
+}
+
+func (s *Student) String() string {
+	return fmt.Sprintf("{%d, %d, %d}", s.id, s.height, s.price)
+}
+
+type MinQueue []*Student
+
+func (pq MinQueue) Len() int { return len(pq) }
+func (pq MinQueue) Less(i, j int) bool {
+	return pq[i].priority < pq[j].priority
+}
+
+func (pq MinQueue) Swap(i, j int) {
+	pq[i], pq[j] = pq[j], pq[i]
+	pq[i].index = i
+	pq[j].index = j
+}
+
+func (pq *MinQueue) Push(x interface{}) {
+	n := len(*pq)
+	item := x.(*Student)
+	item.index = n
+	*pq = append(*pq, item)
+}
+
+func (pq *MinQueue) Pop() interface{} {
+	old := *pq
+	n := len(old)
+	item := old[n-1]
+	item.index = -1 // for safety
+	*pq = old[0 : n-1]
+	return item
+}
+
+// update modifies the priority and value of an Item in the queue.
+func (pq *MinQueue) update(item *Student, priority int) {
+	item.priority = priority
+	heap.Fix(pq, item.index)
+}

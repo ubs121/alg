@@ -97,7 +97,7 @@ func convertArray(buf []byte, n int) []int {
 			i++
 		}
 
-		for i < l && ' ' != buf[i] {
+		for i < l && '0' <= buf[i] && buf[i] <= '9' {
 			d = d*10 + int(buf[i]-'0')
 			i++
 		}

@@ -77,7 +77,7 @@ public class FastCollinearPoints {
             return s1[0].compareTo(s2[0]);
         });
 
-        // remove duplicats & copy into 'segments'
+        // remove duplicates & copy into 'segments'
         segments = new LineSegment[m];
         int i = 0, k = 0;
         while (i < colls.length) {
