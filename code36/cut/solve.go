@@ -62,7 +62,7 @@ func kadane2d(arr [][]int, rows, cols int) (maxSum int64, maxRect *Rect) {
 				rects[n] = maxRect
 				n++
 
-				// resize array if needed
+				// resize queue if needed
 				if n == len(rects) {
 					tmp := make([]*Rect, n)
 					rects = append(rects, tmp...)
