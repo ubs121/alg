@@ -1,4 +1,5 @@
 // https://www.hackerrank.com/challenges/coin-change
+// https://www.hackerrank.com/challenges/ctci-coin-change/problem
 
 package main
 
@@ -57,6 +58,7 @@ func main() {
 	mem = make(map[int]map[int]int)
 
 	for i := 0; i < m; i++ {
+		// FIXME: slow input !!!
 		fmt.Scanf("%d", &c[i])
 	}
 

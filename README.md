@@ -1,64 +1,94 @@
-Algorithms &  utility collection in Golang, Java
+# Algorithms, data structures
 
-# Number-Theoretic Algorithms
+## Number-Theory
 
-## Greatest common divisor
+### Greatest common divisor
 
-## Modular arithmetic
+num/gcd
 
+### Modular arithmetic
 
-# Union-Find (Dynamic Connectivity)
+game/NewYear
+
+### Max/min subarray
+
+num/max_subarray.go
+weekOfCode/code36/cut
+
+## Union-Find (Dynamic Connectivity)
 
 graph/Percolation
 graph/JourneyMoon
 
+## Divide & Conquer
 
+## Probabilistic Analysis and Randomized Algorithms
 
+## Sorting
 
-# Divide & Conquer
+### Count sort
 
-# Probabilistic Analysis and Randomized Algorithms
+sort/CountSort.go
 
-# Sorting
+### Heaps
 
-## Heaps
+### Priority Queue
 
-## Priority Queue
+data/Puzzle
 
-graph/Puzzle
+## Data Structures
 
+### Elementary
 
-# Data Structures
+### Hash Tables
 
-## Elementary
+### Binary Search Tree
 
-## Hash Tables
+### Red Black Trees
 
-## Binary Search Tree
+### Balanced Search Tree / kd-tree
 
-## Red Black Trees
+data/pairs - https://www.hackerrank.com/challenges/array-pairs/problem
 
-## Augmenting Data Structures
+### Binary Indexed Tree
 
-# Dynamic Programming
+data/tree/binaryIndexedTree.go
 
-dynamic/StringReduction: hackerrank.com/challenges/string-reduction
+## Geometry
 
-# Greedy
+weekOfCode/code38/min2win - line sorting
 
-# Binary Indexed Tree
+## Graph
 
-# Graph
+### BFS (Breathe First Search)
 
-## BFS (Breathe First Search)
-
-## DFS (Depth First Search)
+### DFS (Depth First Search)
 
 graph/EvenTree: 
 graph/FriendshipValue
 
-## Minimum Spanning Trees
+### Minimum Spanning Trees
 
-## Shortest Paths
+### Shortest Paths
 
-# Game Theory
+weekOfCode/code36/race
+weekOfCode/code38/timeSaving
+
+
+### Augmenting Data Structures
+
+## Dynamic Programming
+
+dynamic/StringReduction:
+    hackerrank.com/challenges/string-reduction
+
+## Greedy
+
+greedy/CoinChange.go
+greedy/MorganString
+greedy/GreedyFlorist
+
+## Game Theory
+
+game/NewYear
+game/take_game.go
