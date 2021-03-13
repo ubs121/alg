@@ -5,11 +5,11 @@ package sort
 * 	l - left boundary
 * 	r - right boundary
  */
-func countingSort(A []int, l, r int) {
+func countSort(A []int, l, r int) {
 	n := r - l + 1
 	B := make([]int, n)
 
-	C := make(map[int]int)
+	C := make(map[int]int) // C[number->count]
 
 	// [l,r] интервалд i хэдэн удаа байгааг тоолох
 	for i := 0; i < n; i++ {

@@ -2,16 +2,12 @@
 
 ## Number-Theory
 
-### Greatest common divisor
-
 num/gcd
+num/NewYear
 
-### Modular arithmetic
+### Array
 
-game/NewYear
-
-### Max/min subarray
-
+data/pairs - https://www.hackerrank.com/challenges/array-pairs/problem
 num/max_subarray.go
 weekOfCode/code36/cut
 
@@ -26,30 +22,13 @@ graph/JourneyMoon
 
 ## Sorting
 
-### Count sort
-
 sort/CountSort.go
-
-### Heaps
-
-### Priority Queue
-
-data/Puzzle
-
-## Data Structures
-
-### Elementary
 
 ### Hash Tables
 
-### Binary Search Tree
+## Tree
 
 ### Red Black Trees
-
-### Balanced Search Tree / kd-tree
-
-data/pairs - https://www.hackerrank.com/challenges/array-pairs/problem
-
 ### Binary Indexed Tree
 
 data/tree/binaryIndexedTree.go
@@ -87,8 +66,3 @@ dynamic/StringReduction:
 greedy/CoinChange.go
 greedy/MorganString
 greedy/GreedyFlorist
-
-## Game Theory
-
-game/NewYear
-game/take_game.go
