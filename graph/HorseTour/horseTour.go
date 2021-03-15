@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// tour tourState
+// tour state
 type tourState struct {
 	tourGraph [][]int     // graph of valid moves
 	firstNode int         // first starting node

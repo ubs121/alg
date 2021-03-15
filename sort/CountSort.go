@@ -1,36 +1,40 @@
 package sort
 
-/**
-* 	A -  array of integers
-* 	l - left boundary
-* 	r - right boundary
- */
-func countSort(A []int, l, r int) {
-	n := r - l + 1
+import (
+	"sort"
+)
+
+// NOTE: this is a reference implementation of the count sorting,
+// it may be useless if each element is unique
+func countSort(arr []int) {
+	n := len(arr) // number of elements
+
+	// count each elements, could use array instead of map
+	countMap := make(map[int]int) // [key->count]
+	for i := 0; i < n; i++ {
+		countMap[arr[i]]++
+	}
+
+	// sort keys
+	var keys []int
+	for k := range countMap {
+		keys = append(keys, k)
+	}
+	sort.Ints(keys)
+
+	// do prefix sum for each key
+	for i := 1; i < len(keys); i++ {
+		k := keys[i]
+		countMap[k] += countMap[keys[i-1]]
+	}
+
+	// place each elements in order
 	B := make([]int, n)
-
-	C := make(map[int]int) // C[number->count]
-
-	// [l,r] интервалд i хэдэн удаа байгааг тоолох
-	for i := 0; i < n; i++ {
-		C[A[l+i]]++
-	}
-
-	// i-1 тоо хэдэн удаа байгааг тоолох
-	for i := 1; i < len(C); i++ {
-		C[i] += C[i-1] // FIXME: энд алдаа байна !!!
-	}
-
-	// тоонуудыг байрлуулах
 	for i := n - 1; i >= 0; i-- {
-		B[C[A[l+i]]-1] = A[l+i]
-		C[A[l+i]] = C[A[l+i]] - 1
+		B[countMap[arr[i]]-1] = arr[i]
+		countMap[arr[i]]--
 	}
 
-	// B -> A
-	for i := 0; i < n; i++ {
-		A[l+i] = B[i]
-	}
-
-	// DEBUG: fmt.Printf("(%d, %d): %v\n", l, r, A)
+	// copy back to 'arr'
+	copy(arr, B)
 }

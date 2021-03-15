@@ -1,6 +1,6 @@
-package math
+package num
 
-//TODO: use math/big/GCD
+//TODO: see https://golang.org/pkg/math/big/#Int.GCD
 
 // greatest common divisor
 func gcd(u, v uint) uint {
