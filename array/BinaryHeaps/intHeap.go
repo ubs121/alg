@@ -1,5 +1,7 @@
 package sort
 
+// Note: go framework provides the heap implementation
+
 // An IntHeap is a max-heap of ints.
 type IntHeap []int
 
