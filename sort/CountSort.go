@@ -20,7 +20,7 @@ func countSort(arr []int) {
 	for k := range countMap {
 		keys = append(keys, k)
 	}
-	sort.Ints(keys)
+	sort.Ints(keys) // FIXME: why here sorting ??
 
 	// do prefix sum for each key
 	for i := 1; i < len(keys); i++ {
