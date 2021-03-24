@@ -1,74 +1,80 @@
 // https://www.hackerrank.com/challenges/sherlock-and-valid-string/problem
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+)
 
-func main() {
-	var s string
-	fmt.Scanf("%s", &s)
+func isValid(s string) bool {
 
-	c := make([]int, 26)
-
-	// count letters
+	// frequency for each letter, ex: {'a':2, 'b':2, 'c':2, 'd': 1}
+	freq := map[byte]int{}
 	for i := 0; i < len(s); i++ {
-		c[s[i]-'a']++
+		freq[s[i]]++
 	}
 
-	// All characters in 's' have the same exact frequency (i.e., occur the same number of times).
-	// Deleting exactly 1 character from  will result in all its characters having the same frequency
+	// count of each freq, ex: { freq(2):3, freq(1): 1}
+	freqCount := map[int]int{}
+	for _, v := range freq {
+		freqCount[v]++
+	}
 
-	// check bumpiness
-	level := 0
-	cutIndex := -1
+	if len(freqCount) == 1 {
+		return true // string is already valid
+	}
+
+	if len(freqCount) > 2 {
+		return false // not fixable, too many un-even items
+	}
+
+	if c, exists := freqCount[1]; exists && c == 1 {
+		return true // only one odd item exists, so it can be just removed to make it valid
+	}
+
+	var kv [4]int
 	i := 0
-	for ; i < len(c); i++ {
-		// skip 0s
-		if c[i] == 0 {
-			continue
-		}
-		//fmt.Printf("%v, %d, %d\n", c, level, i)
+	// k - freq, v - count of 'k'
+	for k, v := range freqCount {
+		kv[i] = k
+		kv[i+1] = v
+		i += 2
+	}
+	// to simplify the decision {x:xc, y:yc}
+	x, xc, y, yc := kv[0], kv[1], kv[2], kv[3]
 
-		// set level
-		if level == 0 {
-			level = c[i] // use first value as a level, later we can adjust it
-		}
+	// case {(y+1):1, y:yc}, if we remove 'y+1' item it becomes {y:yc+1} which is valid string
+	if xc == 1 && x-1 == y {
+		return true
+	}
 
-		// continue if same level
-		if c[i] == level {
-			continue
-		}
+	// case {x:cx, (xc+1):1}, similar as above
+	if yc == 1 && y-1 == x {
+		return true
+	}
 
-		// above level
-		if c[i] > level {
-			if c[i]-1 == level && cutIndex < 0 {
-				c[i]--       // decrease/cut
-				cutIndex = i // continue
-			} else {
-				break // already cut or too high
-			}
-		}
+	return false
+}
 
-		// below level
-		if c[i] < level {
-			if c[i] == 1 { // when 1
-				if cutIndex < 0 {
-					c[i]--       // decrease/cut
-					cutIndex = i // continue
-				} else {
-					break // already cut
-				}
-			} else { // other
-				level = c[i] // adjust level !!!
-				i = -1       // re-start
-			}
-		}
+func main() {
+	// inFile, err := os.Open("input13.txt")
+	// checkError(err)
+	// defer inFile.Close()
 
-	} // i++ works here
+	line, err := bufio.NewReader(os.Stdin).ReadString('\n')
+	checkError(err)
 
-	if i >= len(c) {
+	if isValid(line) {
 		fmt.Printf("YES\n")
 	} else {
 		fmt.Printf("NO\n")
 	}
+}
 
+func checkError(err error) {
+	if err != nil && err != io.EOF {
+		panic(err)
+	}
 }
