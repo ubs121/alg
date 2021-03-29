@@ -2,19 +2,19 @@ package graph
 
 // UF is a Union Find structure (dynamic connectivity)
 type UF struct {
-	id []int // nodes, id[i] - a parent of 'i'
-	sz []int // tree size, number of nodes
+	id   []int // nodes, id[i] - a parent of 'i'
+	size []int // tree size, number of nodes
 }
 
 // MakeUF makes a new Union Find structure
 func MakeUF(dim int) *UF {
 	uf := new(UF)
 	uf.id = make([]int, dim)
-	uf.sz = make([]int, dim)
+	uf.size = make([]int, dim)
 
 	for i := 0; i < dim; i++ {
-		uf.id[i] = i // each node is on its own
-		uf.sz[i] = 1 // each node size is 1
+		uf.id[i] = i   // each node is on its own
+		uf.size[i] = 1 // each node size is 1
 	}
 	return uf
 }
@@ -22,7 +22,7 @@ func MakeUF(dim int) *UF {
 // Root finds a root of 'p'
 func (u *UF) Root(p int) int {
 	for p != u.id[p] {
-		u.id[p] = u.id[u.id[p]] // Make every other node in path point to its grandparent (thereby halving path length)
+		u.id[p] = u.id[u.id[p]] // Make every other node in path point to its grandparent, thereby halving path length
 		p = u.id[p]
 	}
 	return p
@@ -42,24 +42,27 @@ func (u *UF) Union(p, q int) {
 		return // already connected
 	}
 
-	// weigh sizes and connect to the small one,
+	// weigh sizes and connect to the small tree,
 	// it makes sure each node is not so far from the root
-	if u.sz[i] < u.sz[j] {
+	if u.size[i] < u.size[j] {
 		u.id[i] = j
-		u.sz[j] += u.sz[i]
+		u.size[j] += u.size[i]
 	} else {
 		u.id[j] = i
-		u.sz[i] += u.sz[j]
+		u.size[i] += u.size[j]
 	}
 }
 
-// Components is connected node groups
+// Components returns a connected groups
 func (u *UF) Components() map[int]int {
-	cmap := make(map[int]int) // component id :-> component size
-	r := 0
+	grps := make(map[int]int) // component id :-> component size
+	gid := 0                  // group id
+
+	// FIXME: has to start from 1 if nodes are numbered from 1..n,
+	// and dimension has to be n+1 when when create a new UF
 	for i := 0; i < len(u.id); i++ {
-		r = u.Root(i)
-		cmap[r] = u.sz[r]
+		gid = u.Root(i)
+		grps[gid] = u.size[gid]
 	}
-	return cmap
+	return grps
 }
