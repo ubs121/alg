@@ -13,7 +13,7 @@ import (
 
 /* IDEA:
 1. divide by max
-2. calculate rank for each max element,
+2. calculate rank for each max element (element rank indicates a maximum level of its survival)
 3. sort elements by rank
 4. find min among the elements ranked higher than query 'd'
 
@@ -38,7 +38,7 @@ func solve(arr []int, queries []int) []int {
 	}
 	updateRanks(elem2rank, arr)
 
-	// group by rank and update by actual/minimum values
+	// group by rank and update minimum values
 	// must be rankMin[i] > 0
 	// all rank[i] > q elements will be also in rank 'i'
 	rankMin := make([]int, len(elem2rank)+1)
@@ -52,16 +52,17 @@ func solve(arr []int, queries []int) []int {
 		}
 	}
 
-	// calculate minimums from right to left direction
+	// fill gaps from right to left direction
 	i := len(rankMin) - 1
 	minSoFar := rankMin[i]
 	for i >= 0 {
 		if rankMin[i] == 0 { // missing rank
 			rankMin[i] = minSoFar
 		} else {
-			// ?????
 			if minSoFar > rankMin[i] {
 				minSoFar = rankMin[i]
+			} else {
+				rankMin[i] = minSoFar
 			}
 		}
 		i--
