@@ -11,8 +11,8 @@ import (
 )
 
 /*
-IDEA: One possible magic square is 8.
-So we can check all its permutations including rotated versions.
+IDEA: Total number of possible magic squares is 8.
+So we can check all these magic squares and calculate the difference.
 */
 
 var allMagicSquares = [][]int{

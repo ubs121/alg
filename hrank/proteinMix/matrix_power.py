@@ -1,6 +1,8 @@
 #!/bin/python3
 import os
 import numpy as np
+import math
+import cmath
 from numpy import linalg as LA
 
 def pmix(s, k):
@@ -62,6 +64,7 @@ def pmix1(n, k):
     print("w=", w)
     print("v=", v)
 
+                               
 if __name__ == '__main__':
     # f = open("input13.txt", "r")
     # nk=f.readline().split()
@@ -71,5 +74,43 @@ if __name__ == '__main__':
     # s = f.readline()
     # #s = input()
 
-    result=pmix1(5, 7)
+    #result=pmix1(5, 7)
     #print(result + '\n')
+    U=np.array([
+        [1,1,0,0],
+        [0,1,1,0],
+        [0,0,1,1],
+        [1,0,0,1]])
+
+    # input
+    vec = np.array([0,0,0,1])
+    y=np.dot(U, vec)
+    print(y)
+
+    
+    angle=2 * np.pi/ 4
+    w= complex(math.cos(angle), math.sin(angle))
+
+    Fn=np.array([
+        [1, 1, 1, 1],
+        [1, pow(w, 1), pow(w, 2), pow(w, 3)],
+        [1, pow(w, 2), pow(w, 4), pow(w, 6)],
+        [1, pow(w, 3), pow(w, 6), pow(w, 9)]])
+
+    invFn=np.linalg.inv(Fn)
+
+    vec1=np.dot(Fn, vec)
+
+    # diag(U)
+    
+    diagF=np.array([
+        [2, 0, 0,  0],
+        [0, 1+pow(w,1), 0,  0],
+        [0, 0, 1+pow(w,2), 0],
+        [0, 0,  0, 1+pow(w, 3)]
+    ])
+    vec2=np.dot(diagF, vec1)
+
+    #  fft
+    vec3=np.dot(invFn, vec2)
+    print(vec3)

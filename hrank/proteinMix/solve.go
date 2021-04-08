@@ -9,7 +9,14 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	alg "alg/lib"
 )
+
+/* IDEA: Encode: A=00, B=01, C=10, D=11
+* 	1. bit 0 and 1 can be independent systems
+	2. circular matrix mutiplication using FFT should give the answer
+*/
 
 /*
  * Complete the pmix function below.
@@ -17,76 +24,24 @@ import (
 func pmix(s string, k int) string {
 	n := len(s)
 
-	// IDEA1: bit 0 and 1 can be independent systems
-
 	// prepare initial state
-	state := make([]byte, n)
+	bit0 := make([]complex128, n)
+	bit1 := make([]complex128, n)
 	for i := 0; i < n; i++ {
-		state[i] = s[i] - 'A' // A=00, B=01, C=10, D=11
+		v := (s[i] - 'A')
+		bit0[i] = complex(float64(v&1), 0)
+		bit1[i] = complex(float64((v&0x10)>>1), 0)
 	}
 
-	//statesDone := map[string]int{}
-	for j := 0; j < k; j++ {
-		c := state[0] // to prevent from overwrite
-		for i := 0; i < n-1; i++ {
-			state[i] = state[i] ^ state[i+1] // update
-		}
-		state[n-1] = state[n-1] ^ c
-
-		// break if state is repeated
-		// key := string(state)
-		// if pos, exists := statesDone[key]; exists {
-
-		// 	pattern := map[int][]byte{} // pos -> state
-		// 	pattern[pos] = state
-
-		// 	// collect other states after 'pos'
-		// 	for st, t := range statesDone {
-		// 		if pos < t {
-		// 			pattern[t] = []byte(st)
-		// 		}
-		// 	}
-
-		// 	rem := (k-1)%len(pattern) + pos
-		// 	state = pattern[rem]
-
-		// 	break
-		// } else {
-		// 	statesDone[key] = j
-		// }
-	}
+	fft := &alg.FFT{}
+	fft.Transform(bit0)
 
 	// build final string
 	var sb strings.Builder
 	for i := 0; i < n; i++ {
-		sb.WriteByte('A' + state[i])
-	}
-	return sb.String()
-}
-
-func pmix1(s string, k int) string {
-	n := len(s)
-
-	// IDEA1: bit 0 and 1 can be independent systems
-
-	// prepare initial state
-	state := make([]byte, n)
-	for i := 0; i < n; i += 64 {
-		state[i] = s[i] - 'A' // A=00, B=01, C=10, D=11
-	}
-
-	for j := 0; j < k; j++ {
-		c := state[0] // to prevent from overwrite
-		for i := 0; i < n/64; i++ {
-			state[i] = state[i] ^ state[i+1] // update
-		}
-		state[n-1] = state[n-1] ^ c
-	}
-
-	// build final string
-	var sb strings.Builder
-	for i := 0; i < n; i++ {
-		sb.WriteByte('A' + state[i])
+		v := int(real(bit0[i])) & 1
+		v += (int(real(bit0[i])) & 0x10) << 1
+		sb.WriteByte('A' + byte(v))
 	}
 	return sb.String()
 }
@@ -112,7 +67,7 @@ func main() {
 		panic(fmt.Errorf("wrong input size: exp %d, got %d", n, len(s)))
 	}
 
-	result := pmix1(s, k)
+	result := pmix(s, k)
 	fmt.Printf("%s\n", result)
 }
 
