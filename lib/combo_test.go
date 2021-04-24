@@ -3,28 +3,22 @@
 package alg
 
 import (
-	"fmt"
 	"testing"
 )
 
-var (
-	n int /* нийт элементийн тоо */
-	k int /* хэсэглэж авах элементийн тоо */
-)
-
 func TestCombo(t *testing.T) {
-	fmt.Printf("n k ? ")
-	fmt.Scanf("%d %d", &n, &k)
+	n := 10 /* нийт элементийн тоо */
+	k := 3  /* хэсэглэж авах элементийн тоо */
 
 	/* хэсэглэлд зориулсан массив */
 	a := make([]int, k+1)
 
-	p := k
 	/* эхний байрлал */
 	for i := 1; i <= k; i++ {
 		a[i] = i
 	}
 
+	p := k
 	for p > 0 {
 		/* шинэ байрлал */
 		for i := 1; i <= k; i++ {

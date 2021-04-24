@@ -1,3 +1,3 @@
 //https://en.wikipedia.org/wiki/Cartesian_tree
 
-package main
+package alg

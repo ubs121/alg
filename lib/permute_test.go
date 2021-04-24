@@ -2,24 +2,14 @@
 package alg
 
 import (
-	"fmt"
 	"testing"
 )
 
-var (
-	a [100]int /* сэлгэх утгуудыг агуулах массив */
-	N int      /* сэлгэх элементийн тоо */
-)
-
 func TestPermute(t *testing.T) {
-	print("N=")
-	fmt.Scanf("%d", &N)
+	a := []int{1, 2, 3} /* сэлгэх утгуудыг агуулах массив */
+	N := len(a)         /* сэлгэх элементийн тоо */
 
-	/* эхний хувилбар */
-	for i := 0; i < N; i++ {
-		a[i] = i + 1
-	}
-	display()
+	display(a)
 
 	p := make([]int, N) /* сэлгэмлийг удирдах массив */
 	var j int
@@ -35,7 +25,7 @@ func TestPermute(t *testing.T) {
 			a[j], a[i] = a[i], a[j]
 
 			/* сэлгэмлийн  шинэ хувилбарыг хэвлэх */
-			display()
+			display(a)
 
 			p[i]++
 			i = 1
@@ -47,9 +37,9 @@ func TestPermute(t *testing.T) {
 }
 
 // туслах функц
-func display() {
-	for i := 0; i < N; i++ {
-		print(a[i], " ")
+func display(arr []int) {
+	for i := 0; i < len(arr); i++ {
+		print(arr[i], " ")
 	}
 	println()
 }

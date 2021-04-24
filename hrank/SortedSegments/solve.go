@@ -7,6 +7,8 @@ import (
 	"os"
 	"sort"
 	"strings"
+
+	alg "alg/lib"
 )
 
 // segment type
@@ -66,66 +68,17 @@ func main() {
 		//sort.Ints(a[curr.l : curr.r+1])
 
 		if curr.l < next.l {
-			partial_sort_left(a, curr.l, curr.r, next.l)
+			alg.PartialSortLeft(a, curr.l, curr.r, next.l)
 		} else {
-			partial_sort_right(a, curr.l, curr.r, next.r)
+			alg.PartialSortRight(a, curr.l, curr.r, next.r)
 		}
 	}
 
 	// last query
-	partial_sort_left(a, chain[q].l, chain[q].r, k)
+	alg.PartialSortLeft(a, chain[q].l, chain[q].r, k)
 
 	// print value at position k
 	fmt.Println(a[k])
-}
-
-// https://en.wikipedia.org/wiki/Partial_sorting
-func partial_sort_left(a []int, i, j, k int) {
-	if i < j {
-		p := (i + j) / 2 //i + rand.Intn(j-i+1)
-		p = partition(a, i, j, p)
-
-		partial_sort_left(a, i, p-1, k)
-
-		if p < k {
-			partial_sort_left(a, p+1, j, k)
-		}
-	}
-}
-
-// https://en.wikipedia.org/wiki/Partial_sorting
-func partial_sort_right(a []int, i, j, k int) {
-	if i < j {
-		p := (i + j) / 2
-		p = partition(a, i, j, p)
-
-		partial_sort_right(a, p+1, j, k)
-
-		if p > k-1 {
-			partial_sort_right(a, i, p-1, k)
-		}
-	}
-}
-
-// https://en.wikipedia.org/wiki/Quickselect
-func partition(a []int, l, r, p int) int {
-	v := a[p]
-
-	// Move pivot to end
-	a[p], a[r] = a[r], a[p]
-
-	i := l
-	for j := l; j < r; j++ {
-		if v > a[j] {
-			a[i], a[j] = a[j], a[i]
-			i++
-		}
-	}
-
-	// Move pivot to its final place
-	a[r], a[i] = a[i], a[r]
-
-	return i
 }
 
 // Clean query list (remove unrelated segments, remove duplicates etc.)
