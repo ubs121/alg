@@ -2,25 +2,37 @@
 package main
 
 import (
+	"encoding/binary"
 	"fmt"
 	"math/rand"
-	"time"
+
+	alg "alg/lib"
+	crypto_rand "crypto/rand"
 )
 
 // tour state
 type tourState struct {
-	tourGraph [][]int     // graph of valid moves
-	firstNode int         // first starting node
+	tourGraph *alg.Graph  // graph of valid moves
+	source    int         // starting node
 	moves     map[int]int // moves completed (node->order)
 }
 
-// starts the tour
-func start(node int) *tourState {
+// starts the horse tour from src
+func start(src int) *tourState {
+	var b [8]byte
+	_, err := crypto_rand.Read(b[:])
+	if err != nil {
+		panic("cannot seed with crypto rand")
+	}
+	crypto_rand.Read(b[:])
+	rand.Seed(int64(binary.LittleEndian.Uint64(b[:])))
+
 	st := tourState{}
-	st.firstNode = node
+	st.source = src
 	st.moves = make(map[int]int)
 	st.buildTourGraph()
-	st.nextMove(node)
+	st.tour(src)
+
 	return &st
 }
 
@@ -30,29 +42,28 @@ func (st *tourState) isGoal() bool {
 	return len(st.moves) == 64
 }
 
-// make next move from 'node'
-func (st *tourState) nextMove(node int) bool {
-	st.moves[node] = len(st.moves) // add into the completed moves
+// make tour starting from 'v'
+func (st *tourState) tour(v int) bool {
+	st.moves[v] = len(st.moves) // add into the completed moves
 
 	if st.isGoal() {
 		st.print() // print the result
 		return true
 	}
 
-	nbrs := st.tourGraph[node] // get neighbors of 'node'
+	nbrs := st.tourGraph.Adj[v] // get neighbors of 'v'
 	mvs := make([]int, len(nbrs))
 	copy(mvs, nbrs) // copy to preserve original moves
 
 	solved := false
 	for len(mvs) > 0 && !solved {
-		rand.Seed(time.Now().UnixNano())
 		ind := rand.Intn(len(mvs))              // select random move from 'nbrs'
 		m := mvs[ind]                           // nbr id
 		mvs = append(mvs[:ind], mvs[ind+1:]...) // remove this nbr
 
 		// check if it's not a cycle
 		if _, exists := st.moves[m]; !exists {
-			solved = st.nextMove(m) // make the move
+			solved = st.tour(m) // make the move
 		}
 	}
 
@@ -66,13 +77,13 @@ func (st *tourState) nextMove(node int) bool {
 	// 	}
 	// }
 
-	delete(st.moves, node) // revert this node
+	delete(st.moves, v) // revert this node
 	return solved
 }
 
 // build a tour graph, possible roads
 func (st *tourState) buildTourGraph() {
-	st.tourGraph = make([][]int, 64) // with 64 vertices
+	st.tourGraph = alg.NewGraph(64) // with 64 vertices
 
 	// valid moves between vertices
 	var validMoves = [][]int{{-1, 2}, {-2, 1}, {-2, -1}, {-1, -2}, {1, -2}, {2, -1}, {2, 1}, {1, 2}}
@@ -85,7 +96,7 @@ func (st *tourState) buildTourGraph() {
 				x1 := x + m[0]
 				y1 := y + m[1]
 				if 0 <= x1 && x1 < 8 && 0 <= y1 && y1 < 8 {
-					st.tourGraph[v] = append(st.tourGraph[v], (x1*8 + y1)) // add as neighbor
+					st.tourGraph.AddEdge(v, (x1*8 + y1)) // add an edge
 				}
 			}
 		}
