@@ -15,18 +15,13 @@ func findSubstring(s string, words []string) []int {
 
 	for i := 0; i < len(s)-segLen+1; i++ {
 
-		seg := s[i : i+segLen]     // segment
+		seg := s[i : i+segLen]     // current segment
 		segCnt := map[string]int{} // word counts in the segment
-		countOk := true            // true if words counts valid or less than expected
+		countOk := true            // true if word numbers are equal or less than expected
 		for j := 0; j < segLen-wLen+1; j += wLen {
 			w := seg[j : j+wLen]
 			segCnt[w]++
-			if c, ok := validWords[w]; ok {
-				if segCnt[w] > c {
-					countOk = false
-					break
-				}
-			} else {
+			if c, valid := validWords[w]; !valid || segCnt[w] > c {
 				countOk = false
 				break
 			}
