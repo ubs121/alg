@@ -2,6 +2,7 @@ package main
 
 import (
 	"index/suffixarray"
+	"sort"
 	"strings"
 )
 
@@ -11,13 +12,10 @@ func isMatch(s string, p string) bool {
 	// tokenize 'p'
 	tokens := tokenize(p)
 
-	// token => matches
-	matches := make([][]int, len(tokens))
-
 	// a suffix array for 's'
 	index := suffixarray.New([]byte(s))
-
-	mPos := 0 // last matching position
+	n := len(s) // string length
+	mPos := 0   // last matching position
 
 	// match all tokens in sequence
 	for i, tkn := range tokens {
@@ -30,64 +28,72 @@ func isMatch(s string, p string) bool {
 			if !hasPrefix(s, tkn) {
 				return false // no match
 			}
-			matches[i] = []int{0}
+			mPos = 0 + len(tkn)
 			continue
 		}
 
 		// match at the end
 		if i == len(tokens)-1 {
-			if !hasPrefix(s[len(s)-len(tkn):], tkn) {
+			if mPos+len(tkn) > n {
+				return false
+			}
+
+			mPos = n - len(tkn)
+			if !hasPrefix(s[mPos:], tkn) {
 				return false // no match
 			}
-			matches[i] = []int{len(s) - len(tkn)}
+			mPos = n
 			continue
 		}
 
-		// remove prefix ? marks for prefix search
-		preQM := 0
-		for i := 0; i < len(tkn) && tkn[i] == '?'; i++ {
-			preQM++
-		}
-		pttn1 := tkn[preQM:] // cut ? marks
+		tkn1 := strings.TrimLeft(tkn, "?") // trim ? marks for prefix search
+		nqm := len(tkn) - len(tkn1)        // # of question marks in front
 
-		// all question marks ?
-		if len(pttn1) == 0 {
-			// TODO:
+		// all question mark token ?
+		if len(tkn1) == 0 {
+			// take first match
+			mPos += len(tkn)
+			if mPos > n {
+				return false // can't fit
+			}
 			continue
 		}
 
 		// still has a question mark?
-		hasQM := strings.IndexByte(pttn1, '?')
-		if hasQM > 0 {
-			pttn1 = pttn1[:hasQM] // cut it
+		if hasQM := strings.IndexByte(tkn1, '?'); hasQM > 0 {
+			tkn1 = tkn1[:hasQM] // cut it
 		}
 
-		ixs := index.Lookup([]byte(pttn1), -1)
+		ixs := index.Lookup([]byte(tkn1), -1)
 		if ixs == nil {
 			return false
 		}
+		sort.Ints(ixs)
 
-		// cleanup 'ixs' checking with whole 'pttn'
-		var ixs1 []int
+		// check 'ixs' against pattern, gready search
+		ixFound := false
 		for _, ix := range ixs {
-			if mPos+preQM <= ix && mPos+ix+len(tkn) <= len(s) {
-				// validate if actually matches
-				if hasPrefix(s[ix:], tkn[preQM:]) {
-					ixs1 = append(ixs1, ix)
+			if mPos+nqm <= ix && ix+len(tkn1) <= n {
+				// check if actually matches
+				if hasPrefix(s[ix:], tkn[nqm:]) {
+					mPos = ix + len(tkn)
+					ixFound = true
+					break
 				}
 			}
 		}
 
-		if len(ixs1) == 0 {
+		if !ixFound {
 			return false // no match actually after cleanup
 		}
 
-		matches[i] = ixs1
-
 	}
 
-	if mPos < len(s) {
-		// TODO: check if s ends with '*'
+	if mPos < n {
+		// check if s ends with '*'
+		if !strings.HasSuffix(p, "*") {
+			return false
+		}
 	}
 
 	return true

@@ -7,15 +7,18 @@ import (
 
 func TestMatcher(t *testing.T) {
 	testCases := map[string]bool{
-		// "aa a":                     false,
-		// "cb ?a":                    false,
-		// "mississippi m??*ss*?i*pi": false,
-		// "abcabczzzde *abc???de*":   true,
-		// " ?":                       false, // empty string, pattern '?'
-		// " ****":                    true,  // pattern '****'
-		// " ":                        true,  // both empty
-		// "a ":                       false,
-		"b ?*?": false,
+		"aa a":                     false,
+		"cb ?a":                    false,
+		"mississippi m??*ss*?i*pi": false,
+		"abcabczzzde *abc???de*":   true,
+		" ?":                       false, // empty string, pattern '?'
+		" ****":                    true,  // pattern '****'
+		" ":                        true,  // both empty
+		"a ":                       false,
+		"b ?*?":                    false,
+		"baba b*?a*":               true,
+		"bbbbab *a?*b":             false,
+		"ab *ab":                   true,
 	}
 
 	for tc, exp := range testCases {
