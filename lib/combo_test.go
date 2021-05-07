@@ -3,13 +3,11 @@
 package alg
 
 import (
+	"fmt"
 	"testing"
 )
 
-func TestCombo(t *testing.T) {
-	n := 10 /* нийт элементийн тоо */
-	k := 3  /* хэсэглэж авах элементийн тоо */
-
+func combine(n int, k int) [][]int {
 	/* хэсэглэлд зориулсан массив */
 	a := make([]int, k+1)
 
@@ -18,13 +16,14 @@ func TestCombo(t *testing.T) {
 		a[i] = i
 	}
 
+	var ret [][]int
+
 	p := k
 	for p > 0 {
 		/* шинэ байрлал */
-		for i := 1; i <= k; i++ {
-			print(a[i], " ")
-		}
-		println()
+		cmb := make([]int, k)
+		copy(cmb, a[1:])
+		ret = append(ret, cmb[:])
 
 		/* дараагийн хэсэглэлийг зохиох */
 		if a[k] == n {
@@ -39,4 +38,24 @@ func TestCombo(t *testing.T) {
 			}
 		}
 	}
+
+	return ret
+}
+
+func TestCombo(t *testing.T) {
+	n := 20
+	k := 5
+	ret := combine(n, k)
+	if len(ret) != fact(n)/(fact(n-k)*fact(k)) {
+		t.Errorf("can't match")
+	}
+	fmt.Printf("%v", ret)
+}
+
+func fact(n int) int {
+	p := 1
+	for i := 2; i <= n; i++ {
+		p = p * i
+	}
+	return p
 }
