@@ -1,8 +1,6 @@
 package main
 
 import (
-	"strconv"
-	"strings"
 	"testing"
 )
 
@@ -52,16 +50,4 @@ func TestMaxArea(t *testing.T) {
 			t.Errorf("%s: exp: %d, got %d", tc, exp, got)
 		}
 	}
-}
-
-func parseArray(strArr string) []int {
-	items := strings.Split(strArr, ",")
-	var arr []int
-	for i := 0; i < len(items); i++ {
-		if len(items[i]) > 0 {
-			n, _ := strconv.Atoi(items[i])
-			arr = append(arr, n)
-		}
-	}
-	return arr
 }

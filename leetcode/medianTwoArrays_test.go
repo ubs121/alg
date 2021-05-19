@@ -1,5 +1,10 @@
 package main
 
+import (
+	"strings"
+	"testing"
+)
+
 // https://leetcode.com/problems/median-of-two-sorted-arrays/
 func findMedianSortedArrays(a, b []int) float64 {
 	total := len(a) + len(b) // total elements
@@ -140,4 +145,38 @@ func findMedianSortedArrays(a, b []int) float64 {
 	}
 
 	return float64(sum) / float64(cnt)
+}
+
+func TestSolve(t *testing.T) {
+	testCases := map[string]float64{
+		"1,3 2":                    2.0,
+		"1,2 3,4":                  2.5,
+		"0,0 0,0":                  0.0,
+		" 1":                       1.0,
+		"2 ":                       2.0,
+		" 1,2,3,4":                 2.5,
+		"1,3,3,4,4 1,1,2,2,3":      2.5,
+		"1 1,2,2,2,2,3,4":          2.0,
+		"0,0,0,0,0 -1,0,0,0,0,0,1": 0.0,
+		"1,3 2,7":                  2.5,
+		"2,3,4 1":                  2.5,
+		"5,6 1,2,3,4,7,8,9":        5.0,
+		"1,2 -1,3":                 1.5,
+		"1,4 2,3,5,6,7,8":          4.5,
+		"1,3,5 2,4,6,7,8":          4.5,
+		"5,6,7 1,2,3,4,8,9,10":     5.5,
+		"1,2,2 1,2,3":              2.0,
+		"1,2,3 1,2,2":              2.0,
+	}
+
+	for tc, exp := range testCases {
+		arrays := strings.Split(tc, " ")
+		a := parseArray(arrays[0])
+		b := parseArray(arrays[1])
+
+		got := findMedianSortedArrays(a, b)
+		if got != exp {
+			t.Errorf("%s: exp: %f, got %f", tc, exp, got)
+		}
+	}
 }

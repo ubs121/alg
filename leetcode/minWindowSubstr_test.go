@@ -1,5 +1,10 @@
 package main
 
+import (
+	"strings"
+	"testing"
+)
+
 // https://leetcode.com/problems/minimum-window-substring/
 // Could you find an algorithm that runs in O(n) time?
 func minWindow(s string, t string) string {
@@ -104,4 +109,23 @@ func cmpWindow(got, exp map[byte]int) bool {
 		}
 	}
 	return true
+}
+
+func TestMinWindow(t *testing.T) {
+	testCases := map[string]string{
+		"ADOBECODEBANC ABC": "BANC",
+		"a a":               "a",
+		"a aa":              "",
+		"ab b":              "b",
+		"bba ab":            "ba",
+		"abc b":             "b",
+		"AbabbbAbaA Bab":    "",
+	}
+	for tc, exp := range testCases {
+		splits := strings.Split(tc, " ")
+		got := minWindow(splits[0], splits[1])
+		if got != exp {
+			t.Errorf("%s: exp %s, got %s", tc, exp, got)
+		}
+	}
 }

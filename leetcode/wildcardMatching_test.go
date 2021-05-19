@@ -4,6 +4,7 @@ import (
 	"index/suffixarray"
 	"sort"
 	"strings"
+	"testing"
 )
 
 // https://leetcode.com/problems/wildcard-matching/
@@ -133,4 +134,106 @@ func hasPrefix(s string, p string) bool {
 		}
 	}
 	return true
+}
+
+// https://leetcode.com/problems/regular-expression-matching/submissions/
+func isMatch2(s string, p string) bool {
+
+	tokens := strings.Split(s, ".*")
+	for i, tkn := range tokens {
+		// continue
+		if len(tkn) == 0 {
+			continue // must be prefix or suffix ".*"
+		}
+
+		if i == 0 {
+			// TODO:  match at the beginning, this must be non ".*" start
+			continue
+		}
+
+		// TODO: recurse for each indexOf() variants
+		// TODO: break on first complete solution, otherwise return no solution
+	}
+
+	return true
+}
+
+// checks if 's' matches pattern 'p', that supports "." and "*"
+func hasPrefix2(s string, p string) bool {
+	i := 0
+	j := 0
+
+	ix := strings.Index(s, ".*")
+	if ix >= 0 {
+		s = s[:ix]
+	}
+
+	for i < len(p) {
+		if p[i] == '.' {
+			i++
+			j++
+			continue
+		}
+
+		if p[i] == '*' {
+			// skip all last char
+			prevChar := s[j-1]
+			for j < len(s) && prevChar == s[j] {
+				j++
+			}
+			i++
+		}
+
+		if p[i] == s[j] {
+			j++
+		}
+
+		i++
+	}
+	return true
+}
+
+func TestMatcher1(t *testing.T) {
+	testCases := map[string]bool{
+		"aa a":                     false,
+		"cb ?a":                    false,
+		"mississippi m??*ss*?i*pi": false,
+		"abcabczzzde *abc???de*":   true,
+		" ?":                       false, // empty string, pattern '?'
+		" ****":                    true,  // pattern '****'
+		" ":                        true,  // both empty
+		"a ":                       false,
+		"b ?*?":                    false,
+		"baba b*?a*":               true,
+		"bbbbab *a?*b":             false,
+		"ab *ab":                   true,
+	}
+
+	for tc, exp := range testCases {
+		splits := strings.Split(tc, " ")
+		got := isMatch(splits[0], splits[1])
+
+		if got != exp {
+			t.Errorf("%s: exp %v, got: %v", tc, exp, got)
+		}
+	}
+}
+
+func TestMatcher2(t *testing.T) {
+	testCases := map[string]bool{
+		"ab .*":                  true,
+		"aa a*":                  true,
+		"aa a":                   false,
+		"aab c*a*b":              true,
+		"mississippi mis*is*p*.": false,
+	}
+
+	for tc, exp := range testCases {
+		splits := strings.Split(tc, " ")
+		got := isMatch2(splits[0], splits[1])
+
+		if got != exp {
+			t.Errorf("%s: exp %v, got: %v", tc, exp, got)
+		}
+	}
 }
