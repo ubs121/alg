@@ -20,6 +20,20 @@ func parseArray(strArr string) []int {
 	return arr
 }
 
+func cmpArr(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	sort.Strings(a)
+	sort.Strings(b)
+	for i := 0; i < len(a); i++ {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
+}
+
 func TestParseArray(t *testing.T) {
 	a := parseArray("")
 	if len(a) > 0 {

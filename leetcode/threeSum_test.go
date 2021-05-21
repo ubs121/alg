@@ -104,7 +104,7 @@ func getKeys(m map[int]int) []int {
 	return keys
 }
 
-func TestThreeSum(t *testing.T) {
+func Test3Sum(t *testing.T) {
 	//ret := threeSum([]int{-1, 0, 1, 2, -1, -4})
 	//ret := threeSum([]int{0, 0, 0, 0})
 	// in: [-1,0,1,2,-1,-4,-2,-3,3,0,4]
