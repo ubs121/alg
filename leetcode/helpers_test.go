@@ -20,7 +20,7 @@ func parseArray(strArr string) []int {
 	return arr
 }
 
-func cmpArr(a, b []string) bool {
+func cmpStringArray(a, b []string) bool {
 	if len(a) != len(b) {
 		return false
 	}

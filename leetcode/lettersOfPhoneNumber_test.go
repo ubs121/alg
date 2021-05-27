@@ -96,7 +96,7 @@ func TestLetterCombinations(t *testing.T) {
 
 	for tc, exp := range testCases {
 		got := letterCombinations(tc)
-		if !cmpArr(exp, got) {
+		if !cmpStringArray(exp, got) {
 			t.Errorf("tc %s: exp %v, got %v", tc, exp, got)
 		}
 	}
