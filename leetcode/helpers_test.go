@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func parseArray(strArr string) []int {
+func parseIntArray(strArr string) []int {
 	items := strings.Split(strArr, ",")
 	var arr []int
 	for i := 0; i < len(items); i++ {
@@ -35,7 +35,7 @@ func cmpStringArray(a, b []string) bool {
 }
 
 func TestParseArray(t *testing.T) {
-	a := parseArray("")
+	a := parseIntArray("")
 	if len(a) > 0 {
 		t.Errorf("non-empty array: %v", a)
 	}

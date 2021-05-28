@@ -44,7 +44,7 @@ func TestMaxArea(t *testing.T) {
 	}
 
 	for tc, exp := range testCases {
-		arr := parseArray(tc)
+		arr := parseIntArray(tc)
 		got := maxArea(arr)
 		if got != exp {
 			t.Errorf("%s: exp: %d, got %d", tc, exp, got)

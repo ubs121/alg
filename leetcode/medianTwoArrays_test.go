@@ -171,8 +171,8 @@ func TestSolve(t *testing.T) {
 
 	for tc, exp := range testCases {
 		arrays := strings.Split(tc, " ")
-		a := parseArray(arrays[0])
-		b := parseArray(arrays[1])
+		a := parseIntArray(arrays[0])
+		b := parseIntArray(arrays[1])
 
 		got := findMedianSortedArrays(a, b)
 		if got != exp {

@@ -89,7 +89,7 @@ func Test3SumClosest(t *testing.T) {
 
 	for tc, exp := range testCases {
 		splits := strings.Split(tc, "|")
-		arr := parseArray(splits[0])
+		arr := parseIntArray(splits[0])
 		num, _ := strconv.Atoi(splits[1])
 		got := threeSumClosest(arr, num)
 		if got != exp {
@@ -108,7 +108,7 @@ func Test2SumClosest(t *testing.T) {
 
 	for tc, exp := range testCases {
 		splits := strings.Split(tc, "|")
-		arr := parseArray(splits[0])
+		arr := parseIntArray(splits[0])
 		num, _ := strconv.Atoi(splits[1])
 		got := twoSumClosest(arr, num)
 		if got != exp {
