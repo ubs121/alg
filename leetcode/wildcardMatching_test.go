@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"index/suffixarray"
 	"sort"
 	"strings"
@@ -136,63 +137,6 @@ func hasPrefix(s string, p string) bool {
 	return true
 }
 
-// https://leetcode.com/problems/regular-expression-matching/submissions/
-func isMatch2(s string, p string) bool {
-
-	tokens := strings.Split(s, ".*")
-	for i, tkn := range tokens {
-		// continue
-		if len(tkn) == 0 {
-			continue // must be prefix or suffix ".*"
-		}
-
-		if i == 0 {
-			// TODO:  match at the beginning, this must be non ".*" start
-			continue
-		}
-
-		// TODO: recurse for each indexOf() variants
-		// TODO: break on first complete solution, otherwise return no solution
-	}
-
-	return true
-}
-
-// checks if 's' matches pattern 'p', that supports "." and "*"
-func hasPrefix2(s string, p string) bool {
-	i := 0
-	j := 0
-
-	ix := strings.Index(s, ".*")
-	if ix >= 0 {
-		s = s[:ix]
-	}
-
-	for i < len(p) {
-		if p[i] == '.' {
-			i++
-			j++
-			continue
-		}
-
-		if p[i] == '*' {
-			// skip all last char
-			prevChar := s[j-1]
-			for j < len(s) && prevChar == s[j] {
-				j++
-			}
-			i++
-		}
-
-		if p[i] == s[j] {
-			j++
-		}
-
-		i++
-	}
-	return true
-}
-
 func TestMatcher1(t *testing.T) {
 	testCases := map[string]bool{
 		"aa a":                     false,
@@ -219,13 +163,141 @@ func TestMatcher1(t *testing.T) {
 	}
 }
 
+// https://leetcode.com/problems/regular-expression-matching/submissions/
+func isMatch2(s string, p string) bool {
+	tkns := tokenize2(p)
+	return _match2(s, tkns, true)
+}
+
+// regular expression matching with support for '.' and '*'
+func _match2(s string, tkns []string, matchAtBeginning bool) bool {
+	if len(tkns) == 0 {
+		return (len(s) == 0 || !matchAtBeginning)
+	}
+
+	tkn := tkns[0]
+	switch tkn {
+	case ".*":
+		return _match2(s, tkns[1:], false)
+	case ".":
+		if matchAtBeginning {
+			return len(s) > 0 && _match2(s[1:], tkns[1:], true)
+		} else {
+			// check all cuts in s[1:]
+			i := 1
+			for i <= len(s) {
+				if _match2(s[i:], tkns[1:], true) {
+					return true
+				}
+				i++
+			}
+		}
+	default:
+		if strings.HasSuffix(tkn, "*") { // c*
+			c := tkn[0]
+			i := 0
+			if !matchAtBeginning {
+				if _match2(s, tkns[1:], matchAtBeginning) { // c{0} case first
+					return true
+				}
+
+				i = strings.IndexByte(s, c) // c+ case
+				if i < 0 {
+					return false
+				}
+				i++
+			}
+
+			// count 'c'
+			for i < len(s) && s[i] == c {
+				i++
+			}
+
+			// check all cuts in s[j:i]
+			j := 0
+			for j <= i {
+				if _match2(s[j:], tkns[1:], true) {
+					return true
+				}
+				j++
+			}
+		} else { // literal
+			if matchAtBeginning {
+				return strings.HasPrefix(s, tkn) && _match2(s[len(tkn):], tkns[1:], true)
+			} else {
+				// check all cuts positions of 'tkn'
+				for len(s) > 0 {
+					ix := strings.Index(s, tkn)
+					if ix < 0 {
+						return false
+					}
+
+					s = s[ix+len(tkn):]
+					if _match2(s, tkns[1:], true) {
+						return true
+					}
+				}
+			}
+		}
+	}
+
+	return false
+}
+
+func tokenize2(p string) []string {
+	var tokens []string
+	var sb strings.Builder
+
+	for i := 0; i < len(p); i++ {
+		switch p[i] {
+		case '.':
+			if sb.Len() > 0 {
+				tokens = append(tokens, sb.String())
+				sb.Reset()
+			}
+			if i+1 < len(p) && p[i+1] == '*' {
+				tokens = append(tokens, ".*")
+				i++
+			} else {
+				tokens = append(tokens, ".")
+			}
+
+		default:
+			if i+1 < len(p) && p[i+1] == '*' {
+				if sb.Len() > 0 {
+					tokens = append(tokens, sb.String())
+					sb.Reset()
+				}
+				tokens = append(tokens, p[i:i+2])
+				i++
+			} else {
+				sb.WriteByte(p[i])
+			}
+		}
+	}
+
+	if sb.Len() > 0 {
+		tokens = append(tokens, sb.String())
+	}
+	return tokens
+}
+
 func TestMatcher2(t *testing.T) {
 	testCases := map[string]bool{
 		"ab .*":                  true,
-		"aa a*":                  true,
 		"aa a":                   false,
 		"aab c*a*b":              true,
 		"mississippi mis*is*p*.": false,
+		"abcabczzzde abc.*ee*":   true,
+		"aaa a*a":                true,
+		"aa a*":                  true,
+		"b .*b.*":                true,
+		" .":                     false,
+		"a ":                     false,
+		"aabc .*.c":              true,
+		"aaba ab*a*c*a":          false,
+		"abcdede ab.*de":         true,
+		"a .*.":                  true,
 	}
 
 	for tc, exp := range testCases {
@@ -236,4 +308,9 @@ func TestMatcher2(t *testing.T) {
 			t.Errorf("%s: exp %v, got: %v", tc, exp, got)
 		}
 	}
+}
+
+func TestTokenize2(t *testing.T) {
+	tkns := tokenize2("mis*is*p*.")
+	fmt.Printf("%v", tkns)
 }
