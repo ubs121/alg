@@ -8,6 +8,15 @@ import (
 
 // hashing function for anagrams
 func hashAnagram(s string) string {
+	buf := make([]byte, 26) // could be []rune here
+	for i := 0; i < len(s); i++ {
+		buf[s[i]-'a']++
+	}
+	return string(buf)
+}
+
+// hashing function for anagrams
+func hashAnagram2(s string) string {
 	// count
 	var buf [26]int
 	for i := 0; i < len(s); i++ {
