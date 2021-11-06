@@ -1,3 +1,4 @@
+// divide and conquer
 // https://www.hackerrank.com/challenges/array-pairs/problem
 package main
 

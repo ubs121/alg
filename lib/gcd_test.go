@@ -5,7 +5,7 @@ import "testing"
 //also see https://golang.org/pkg/math/big/#Int.GCD
 
 // greatest common divisor
-func gcd(a, b int) int {
+func GCD(a, b int) int {
 	for b != 0 {
 		a, b = b, a%b
 	}
@@ -50,7 +50,7 @@ func gcd2(u, v uint) uint {
 }
 
 func TestGCD(t *testing.T) {
-	if r := gcd(10, 6); r != 2 {
+	if r := GCD(10, 6); r != 2 {
 		t.Errorf("gcd(10,6): exp 2, got %d", r)
 	}
 

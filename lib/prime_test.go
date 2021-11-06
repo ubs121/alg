@@ -6,17 +6,19 @@ import (
 	"testing"
 )
 
+func isPrime(n int) bool {
+	for j := 3; j < int(math.Sqrt(float64(n))); j++ {
+		if n%j == 0 {
+			return false
+		}
+	}
+	return true
+}
+
 func TestPrime(t *testing.T) {
 	n := 1000
 	for i := 3; i < n; i += 2 {
-		isPrime := true
-		for j := 3; j < int(math.Sqrt(float64(i))); j++ {
-			if i%j == 0 {
-				isPrime = false
-				break
-			}
-		}
-		if isPrime {
+		if isPrime(i) {
 			fmt.Printf("%d ", i)
 		}
 	}

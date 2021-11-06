@@ -8,7 +8,7 @@ const BLACK = 0
 // RedBlackTree node
 type RbtNode struct {
 	Key         string   // key
-	Val         string   // data
+	Data        string   // data
 	Left, Right *RbtNode // left, right subtrees
 	Color       int      // color of parent link
 	Size        int      // subtree count

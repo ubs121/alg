@@ -1,4 +1,4 @@
-package main
+package alg
 
 // https://leetcode.com/problems/min-stack/
 type MinStack struct {

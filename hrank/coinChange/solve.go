@@ -13,11 +13,11 @@ var (
 	mem map[int]map[int]int
 )
 
-func solve(n int, c []int) int {
+func solve(n int, coins []int) int {
 
 	// check from the solution store
 	if arrSol, ok := mem[n]; ok && arrSol != nil {
-		if k, ok := arrSol[len(c)]; ok {
+		if k, ok := arrSol[len(coins)]; ok {
 			return k
 		}
 	}
@@ -33,10 +33,10 @@ func solve(n int, c []int) int {
 	k := 0
 
 	// бага дугаартай зоосноос эхлэн задлах
-	for i := 0; i < len(c); i++ {
+	for i := 0; i < len(coins); i++ {
 		//fmt.Printf("(%d-%d)", n, c[i])
 
-		k = k + solve(n-c[i], c[i:]) // remove duplicates c[i:]
+		k = k + solve(n-coins[i], coins[i:]) // remove duplicates c[i:]
 	}
 
 	// remember in the solution store
@@ -44,7 +44,7 @@ func solve(n int, c []int) int {
 		mem[n] = make(map[int]int)
 	}
 
-	mem[n][len(c)] = k
+	mem[n][len(coins)] = k
 
 	return k
 }
@@ -58,7 +58,6 @@ func main() {
 	mem = make(map[int]map[int]int)
 
 	for i := 0; i < m; i++ {
-		// FIXME: slow input !!!
 		fmt.Scanf("%d", &c[i])
 	}
 

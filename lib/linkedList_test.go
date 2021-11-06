@@ -1,4 +1,4 @@
-package main
+package alg
 
 import (
 	"fmt"
@@ -11,23 +11,7 @@ type ListNode struct {
 }
 
 // https://leetcode.com/problems/merge-k-sorted-lists/
-func mergeKLists(lists []*ListNode) *ListNode {
-	k := len(lists)
-	if k == 0 {
-		return nil
-	}
-	if k == 1 {
-		return lists[0]
-	}
-
-	prev := lists[0]
-	for i := 1; i < k; i++ {
-		prev = mergeTwoLists(prev, lists[i])
-	}
-	return prev
-}
-
-func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
+func mergeLinkedLists(l1 *ListNode, l2 *ListNode) *ListNode {
 	if l1 == nil {
 		return l2
 	}
@@ -68,25 +52,6 @@ func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 	return root
 }
 
-func TestMergeTwoLists(t *testing.T) {
-	l1 := buildListNode([]int{1, 4, 5})
-	l2 := buildListNode([]int{1, 2, 3, 4, 6})
-	printListNode(l1)
-	printListNode(l2)
-
-	l3 := mergeTwoLists(l1, l2)
-	printListNode(l3)
-}
-
-func BenchmarkMergeTwoLists(b *testing.B) {
-
-	for i := 0; i < b.N; i++ {
-		l1 := buildListNode([]int{1, 4, 5})
-		l2 := buildListNode([]int{1, 2, 3, 4, 6})
-		mergeTwoLists(l1, l2)
-	}
-}
-
 func buildListNode(lst []int) *ListNode {
 	root := &ListNode{Val: lst[0]}
 	p := root
@@ -107,4 +72,23 @@ func printListNode(root *ListNode) {
 		p = p.Next
 	}
 	fmt.Println()
+}
+
+func TestMergeTwoLists(t *testing.T) {
+	l1 := buildListNode([]int{1, 4, 5})
+	l2 := buildListNode([]int{1, 2, 3, 4, 6})
+	printListNode(l1)
+	printListNode(l2)
+
+	l3 := mergeLinkedLists(l1, l2)
+	printListNode(l3)
+}
+
+func BenchmarkMergeTwoLists(b *testing.B) {
+
+	for i := 0; i < b.N; i++ {
+		l1 := buildListNode([]int{1, 4, 5})
+		l2 := buildListNode([]int{1, 2, 3, 4, 6})
+		mergeLinkedLists(l1, l2)
+	}
 }

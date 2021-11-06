@@ -1,7 +1,10 @@
 // Frog jumping
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"testing"
+)
 
 const (
 	river string = "RWWRRRWWRWWRRRRRRRRRRRRRRWWW"
@@ -12,7 +15,7 @@ var (
 	mem map[int]bool
 )
 
-func jump(pos int) bool {
+func frogJump(pos int) bool {
 
 	if pos >= len(river) {
 		return true
@@ -27,7 +30,7 @@ func jump(pos int) bool {
 		if b, ok := mem[pos+v]; ok { // check from memory
 			return b
 		} else {
-			mem[pos+v] = jump(pos + v) // calculate
+			mem[pos+v] = frogJump(pos + v) // calculate
 
 			if mem[pos+v] {
 				return true
@@ -38,11 +41,11 @@ func jump(pos int) bool {
 	return false
 }
 
-func main() {
+func TestFrogJump(t *testing.T) {
 
 	mem = make(map[int]bool)
 
-	if jump(-1) { // starting position
+	if frogJump(-1) { // starting position
 		fmt.Println("YES")
 	} else {
 		fmt.Println("NO")

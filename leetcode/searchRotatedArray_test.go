@@ -1,13 +1,14 @@
 package main
 
 import (
+	alg "alg/lib"
 	"strconv"
 	"strings"
 	"testing"
 )
 
 // https://leetcode.com/problems/search-in-rotated-sorted-array/
-func search(nums []int, target int) int {
+func searchInRotatedArray(nums []int, target int) int {
 
 	l := 0
 	r := len(nums) - 1
@@ -59,9 +60,9 @@ func TestSearch(t *testing.T) {
 
 	for tc, exp := range testCases {
 		splits := strings.Split(tc, "|")
-		arr := parseIntArray(splits[0])
+		arr := alg.ParseIntArray(splits[0])
 		target, _ := strconv.Atoi(splits[1])
-		got := search(arr, int(target))
+		got := searchInRotatedArray(arr, int(target))
 		if got != exp {
 			t.Errorf("tc %s: exp %d, got %d", tc, exp, got)
 		}

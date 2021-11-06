@@ -1,8 +1,11 @@
 package main
 
-import "testing"
+import (
+	alg "alg/lib"
+	"testing"
+)
 
-func trap(height []int) int {
+func trapMaxWater(height []int) int {
 	// Water can be trapped inside the current and the next equal or higher bar
 	// iterate till the next bar and calculate the volume in between them
 
@@ -60,7 +63,7 @@ func trap(height []int) int {
 	return totalVol
 }
 
-func TestTrapWater(t *testing.T) {
+func TestTrapMaxWater(t *testing.T) {
 	testCases := map[string]int{
 		"4,2,3":                   1,
 		"0,1,0,2,1,0,1,3,2,1,2,1": 6,
@@ -68,8 +71,8 @@ func TestTrapWater(t *testing.T) {
 	}
 
 	for tc, exp := range testCases {
-		arr := parseIntArray(tc)
-		got := trap(arr)
+		arr := alg.ParseIntArray(tc)
+		got := trapMaxWater(arr)
 		if got != exp {
 			t.Errorf("tc %s: exp %d, got %d", tc, exp, got)
 		}

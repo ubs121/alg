@@ -2,6 +2,7 @@ package alg
 
 import (
 	"fmt"
+	"reflect"
 	"sort"
 	"testing"
 )
@@ -28,14 +29,23 @@ func TestSortSlice(t *testing.T) {
 
 func TestCountSort(t *testing.T) {
 
-	// sample array
-	array := []int{4, 5, 1, 2, 4, 1, 3}
+	// test input
+	arr := []int{4, 5, 1, 2, 4, 1, 3}
+
+	// expected result
+	arrExp := make([]int, len(arr))
+	copy(arrExp, arr)
+	sort.Ints(arrExp) // sort using standard func
 
 	/* массивыг эрэмбэлэх */
-	countSort(array)
+	countSort(arr)
+
+	if !reflect.DeepEqual(arr, arrExp) {
+		t.Error("not equal")
+	}
 
 	/* эрэмбэлэгдсэн  массивыг хэвлэж харуулах */
-	for i := 0; i < len(array); i++ {
-		fmt.Printf("%d ", array[i])
+	for i := 0; i < len(arr); i++ {
+		fmt.Printf("%d ", arr[i])
 	}
 }

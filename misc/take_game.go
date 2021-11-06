@@ -1,4 +1,4 @@
-package alg
+package main
 
 import "testing"
 
@@ -12,7 +12,7 @@ import "testing"
 /*  x, y - шонд үлдсэн цагирагийн тоо
  *  step - нүүдлийн тоо
  */
-func take(x int, y int, step int) bool {
+func takeRing(x int, y int, step int) bool {
 
 	if x == 0 || y == 0 {
 		/* Аль нэг шонгийн цагираг дууссан бол
@@ -22,22 +22,22 @@ func take(x int, y int, step int) bool {
 
 	if step%2 == 0 {
 		// A тоглогч цагираг авах хувилбарууд
-		return (take(x-1, y, step+1) &&
-			take(x-1, y-1, step+1) &&
-			take(x, y-1, step+1))
+		return (takeRing(x-1, y, step+1) &&
+			takeRing(x-1, y-1, step+1) &&
+			takeRing(x, y-1, step+1))
 	}
 
 	// B тоглогч цагираг авах хувилбарууд
-	return (take(x-1, y, step+1) ||
-		take(x-1, y-1, step+1) ||
-		take(x, y-1, step+1))
+	return (takeRing(x-1, y, step+1) ||
+		takeRing(x-1, y-1, step+1) ||
+		takeRing(x, y-1, step+1))
 }
 
 /* Функцийг турших үндсэн програм */
 func TestTakeGame(t *testing.T) {
 	/* (7,7) хосын хувьд А тоглогч хожих эсэхийг шалгах */
 	println("A тоглогч хожих уу? ")
-	if take(7, 7, 1) {
+	if takeRing(7, 7, 1) {
 		println("тийм")
 	} else {
 		println("үгүй")

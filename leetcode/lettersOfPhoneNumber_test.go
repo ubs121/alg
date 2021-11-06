@@ -1,6 +1,7 @@
 package main
 
 import (
+	alg "alg/lib"
 	"strings"
 	"testing"
 )
@@ -96,7 +97,7 @@ func TestLetterCombinations(t *testing.T) {
 
 	for tc, exp := range testCases {
 		got := letterCombinations(tc)
-		if !cmpStringArray(exp, got) {
+		if !alg.CmpUnorderedStringArray(exp, got) {
 			t.Errorf("tc %s: exp %v, got %v", tc, exp, got)
 		}
 	}

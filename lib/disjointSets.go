@@ -19,7 +19,7 @@ func MakeUF(dim int) *UF {
 	return uf
 }
 
-// Root finds a root of 'p'
+// Finds a root of 'p'
 func (u *UF) Root(p int) int {
 	for p != u.id[p] {
 		u.id[p] = u.id[u.id[p]] // Make every other node in path point to its grandparent, thereby halving path length
@@ -28,7 +28,7 @@ func (u *UF) Root(p int) int {
 	return p
 }
 
-// Connected checks if 'p' and 'q' are connected. O(log(n))
+// Checks if 'p' and 'q' are connected. O(log(n))
 func (u *UF) Connected(p, q int) bool {
 	return u.Root(p) == u.Root(q)
 }

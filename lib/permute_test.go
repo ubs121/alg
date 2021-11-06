@@ -1,4 +1,3 @@
-// N ширхэг тоогоор зохиох бүх боломжит сэлгэмэл
 package alg
 
 import (
@@ -6,7 +5,8 @@ import (
 	"testing"
 )
 
-func permute(nums []int) [][]int {
+// N ширхэг тоогоор зохиох бүх боломжит сэлгэмэл
+func PermuteInts(nums []int) [][]int {
 	n := len(nums)
 
 	var ret [][]int
@@ -45,9 +45,9 @@ func permute(nums []int) [][]int {
 	return ret
 }
 
-func TestPermute(t *testing.T) {
+func TestPermuteInts(t *testing.T) {
 	a := []int{1, 2, 3} /* сэлгэх утгуудыг агуулах массив */
-	ret := permute(a)
+	ret := PermuteInts(a)
 	fmt.Printf("%v", ret)
 }
 

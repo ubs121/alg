@@ -1,6 +1,7 @@
 package main
 
 import (
+	alg "alg/lib"
 	"math"
 	"sort"
 	"strconv"
@@ -89,7 +90,7 @@ func Test3SumClosest(t *testing.T) {
 
 	for tc, exp := range testCases {
 		splits := strings.Split(tc, "|")
-		arr := parseIntArray(splits[0])
+		arr := alg.ParseIntArray(splits[0])
 		num, _ := strconv.Atoi(splits[1])
 		got := threeSumClosest(arr, num)
 		if got != exp {
@@ -108,7 +109,7 @@ func Test2SumClosest(t *testing.T) {
 
 	for tc, exp := range testCases {
 		splits := strings.Split(tc, "|")
-		arr := parseIntArray(splits[0])
+		arr := alg.ParseIntArray(splits[0])
 		num, _ := strconv.Atoi(splits[1])
 		got := twoSumClosest(arr, num)
 		if got != exp {

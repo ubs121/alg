@@ -39,7 +39,6 @@ func main() {
 	fmt.Printf("%d\n", sum)
 }
 
-// greatest common divisor
 func gcd(a, b int) int {
 	for b != 0 {
 		t := b

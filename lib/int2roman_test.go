@@ -1,11 +1,10 @@
-package main
+package alg
 
 import (
 	"testing"
 )
 
-// 	Symbol       Value
-var symTable = map[int]string{
+var dictIntToRoman = map[int]string{
 	1:    "I",
 	4:    "IV",
 	5:    "V",
@@ -19,6 +18,22 @@ var symTable = map[int]string{
 	500:  "D",
 	900:  "CM",
 	1000: "M",
+}
+
+var dictRomanToInt = map[string]int{
+	"I":  1,
+	"IV": 4,
+	"V":  5,
+	"IX": 9,
+	"X":  10,
+	"XL": 40,
+	"L":  50,
+	"XC": 90,
+	"C":  100,
+	"CD": 400,
+	"D":  500,
+	"CM": 900,
+	"M":  1000,
 }
 
 // https://leetcode.com/problems/integer-to-roman/
@@ -38,19 +53,19 @@ func intToRoman(num int) string {
 		r = num % 10
 
 		if r == 4 || r == 9 || r == 5 {
-			sym = symTable[d*r]
+			sym = dictIntToRoman[d*r]
 			ret = sym + ret
 		} else {
 			if 5 < r {
-				tmp := symTable[d*5]
+				tmp := dictIntToRoman[d*5]
 				r = r - 5
-				sym = symTable[d]
+				sym = dictIntToRoman[d]
 				for i := 0; i < r; i++ {
 					tmp = tmp + sym
 				}
 				ret = tmp + ret
 			} else {
-				sym = symTable[d]
+				sym = dictIntToRoman[d]
 				for i := 0; i < r; i++ {
 					ret = sym + ret
 				}
@@ -64,39 +79,22 @@ func intToRoman(num int) string {
 	return ret
 }
 
-// 	Symbol       Value
-var symTable2 = map[string]int{
-	"I":  1,
-	"IV": 4,
-	"V":  5,
-	"IX": 9,
-	"X":  10,
-	"XL": 40,
-	"L":  50,
-	"XC": 90,
-	"C":  100,
-	"CD": 400,
-	"D":  500,
-	"CM": 900,
-	"M":  1000,
-}
-
 func romanToInt(s string) int {
 	num := 0
 	i := len(s)
 	for i > 1 {
-		if n, exists := symTable2[s[i-2:i]]; exists {
+		if n, exists := dictRomanToInt[s[i-2:i]]; exists {
 			num += n
 			i--
 		} else {
-			num += symTable2[s[i-1:i]]
+			num += dictRomanToInt[s[i-1:i]]
 		}
 		i--
 	}
 
 	// last digit
 	if i > 0 {
-		num += symTable2[s[i-1:i]]
+		num += dictRomanToInt[s[i-1:i]]
 	}
 
 	return num

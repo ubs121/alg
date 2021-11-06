@@ -1,6 +1,7 @@
 package main
 
 import (
+	alg "alg/lib"
 	"testing"
 )
 
@@ -44,7 +45,7 @@ func TestMaxArea(t *testing.T) {
 	}
 
 	for tc, exp := range testCases {
-		arr := parseIntArray(tc)
+		arr := alg.ParseIntArray(tc)
 		got := maxArea(arr)
 		if got != exp {
 			t.Errorf("%s: exp: %d, got %d", tc, exp, got)

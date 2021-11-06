@@ -1,6 +1,7 @@
 package main
 
 import (
+	alg "alg/lib"
 	"strings"
 	"testing"
 )
@@ -171,8 +172,8 @@ func TestSolve(t *testing.T) {
 
 	for tc, exp := range testCases {
 		arrays := strings.Split(tc, " ")
-		a := parseIntArray(arrays[0])
-		b := parseIntArray(arrays[1])
+		a := alg.ParseIntArray(arrays[0])
+		b := alg.ParseIntArray(arrays[1])
 
 		got := findMedianSortedArrays(a, b)
 		if got != exp {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	alg "alg/lib"
 	"testing"
 )
 
@@ -55,7 +56,7 @@ func TestGenerateParenthesis(t *testing.T) {
 	}
 	for tc, exp := range testCases {
 		got := generateParenthesis(tc)
-		if !cmpStringArray(exp, got) {
+		if !alg.CmpUnorderedStringArray(exp, got) {
 			t.Errorf("tc %d, exp %s, got %s", tc, exp, got)
 		}
 	}
