@@ -1,5 +1,7 @@
 package alg
 
+// TODO: container/list
+
 // Double queue, similar to "container/list"
 type Deque struct {
 	arr   []int // array items
