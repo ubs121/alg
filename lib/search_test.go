@@ -7,25 +7,18 @@ import (
 	"testing"
 )
 
-func TestSearchInts(t *testing.T) {
-	a := []int{1, 2, 3, 4}
-	b := []int{1, 2, 3, 4}
-	am := len(a) / 2
-	bm := len(b) / 2
-	amInd := sort.SearchInts(b, a[am])
-	bmInd := sort.SearchInts(a, b[bm])
+func TestSuffixArray(t *testing.T) {
+	// create an index for data
+	index := suffixarray.New([]byte("banana"))
 
-	exp := 2
-	if amInd != exp {
-		t.Errorf("exp %d, got %d", exp, amInd)
-	}
-
-	exp = 1
-	if bmInd != exp {
-		t.Errorf("exp %d, got %d", exp, bmInd)
+	// lookup
+	offsets := index.Lookup([]byte("ana"), -1)
+	for _, off := range offsets {
+		fmt.Println(off)
 	}
 }
 
+// sort.Search()
 func TestBinarySearch(t *testing.T) {
 	arr := []int{1, 2, 3, 4, 5, 6, 55, 77}
 	x := 10 // search value
@@ -43,13 +36,21 @@ func TestBinarySearch(t *testing.T) {
 	}
 }
 
-func TestSuffixArray(t *testing.T) {
-	// create an index for data
-	index := suffixarray.New([]byte("banana"))
+func TestSearchInts(t *testing.T) {
+	a := []int{1, 2, 3, 4}
+	b := []int{1, 2, 3, 4}
+	am := len(a) / 2
+	bm := len(b) / 2
+	amInd := sort.SearchInts(b, a[am])
+	bmInd := sort.SearchInts(a, b[bm])
 
-	// lookup
-	offsets := index.Lookup([]byte("ana"), -1)
-	for _, off := range offsets {
-		fmt.Println(off)
+	exp := 2
+	if amInd != exp {
+		t.Errorf("exp %d, got %d", exp, amInd)
+	}
+
+	exp = 1
+	if bmInd != exp {
+		t.Errorf("exp %d, got %d", exp, bmInd)
 	}
 }

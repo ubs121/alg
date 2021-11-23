@@ -27,7 +27,7 @@ func TestSortSlice(t *testing.T) {
 	fmt.Println("By age:", people)
 }
 
-func TestCountSort(t *testing.T) {
+func TestCountingSort(t *testing.T) {
 
 	// test input
 	arr := []int{4, 5, 1, 2, 4, 1, 3}
@@ -38,7 +38,8 @@ func TestCountSort(t *testing.T) {
 	sort.Ints(arrExp) // sort using standard func
 
 	/* массивыг эрэмбэлэх */
-	countSort(arr)
+	maxVal := arrExp[len(arrExp)-1] + 1
+	CountingSort(arr, maxVal)
 
 	if !reflect.DeepEqual(arr, arrExp) {
 		t.Error("not equal")

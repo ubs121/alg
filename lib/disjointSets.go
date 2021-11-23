@@ -3,10 +3,11 @@ package alg
 // UF is a Union Find structure (dynamic connectivity)
 type UF struct {
 	id   []int // nodes, id[i] - a parent of 'i'
-	size []int // tree size, number of nodes
+	size []int // number of nodes
 }
 
 // MakeUF makes a new Union Find structure
+// NOTE: dimension has to be n+1 if nodes are numbered from 1..n
 func MakeUF(dim int) *UF {
 	uf := new(UF)
 	uf.id = make([]int, dim)
@@ -58,8 +59,6 @@ func (u *UF) Components() map[int]int {
 	grps := make(map[int]int) // component id :-> component size
 	gid := 0                  // group id
 
-	// NOTE: has to start from 1 if nodes are numbered from 1..n,
-	// and dimension has to be n+1 when when create a new UF
 	for i := 0; i < len(u.id); i++ {
 		gid = u.Root(i)
 		grps[gid] = u.size[gid]
