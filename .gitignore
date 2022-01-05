@@ -1,6 +1,8 @@
 build
 dist
+target
 nbproject/private
 *.exe
 *.pprof
 *.out
+*.lock

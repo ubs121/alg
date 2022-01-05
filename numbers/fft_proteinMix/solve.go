@@ -3,13 +3,14 @@
 package main
 
 import (
-	"numbers"
 	"bufio"
 	"fmt"
 	"io"
 	"os"
 	"strconv"
 	"strings"
+
+	"alg/numbers"
 )
 
 /* IDEA: Encode: A=00, B=01, C=10, D=11
