@@ -3,7 +3,7 @@
 package main
 
 import (
-	alg "alg/fft"
+	"numbers"
 	"bufio"
 	"fmt"
 	"io"
@@ -32,7 +32,7 @@ func pmix(s string, k int) string {
 		bit1[i] = complex(float64((v&0x10)>>1), 0)
 	}
 
-	fft := &alg.FFT{}
+	fft := &numbers.FFT{}
 	fft.Transform(bit0)
 
 	// build final string
