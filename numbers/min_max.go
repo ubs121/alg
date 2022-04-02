@@ -1,13 +1,17 @@
 package numbers
 
-func Min(a, b int) int {
+type Number interface {
+	int | float64
+}
+
+func Min[T Number](a, b T) T {
 	if a < b {
 		return a
 	}
 	return b
 }
 
-func Max(a, b int) int {
+func Max[T Number](a, b T) T {
 	if a > b {
 		return a
 	}

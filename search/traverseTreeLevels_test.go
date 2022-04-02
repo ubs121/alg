@@ -11,7 +11,7 @@ type msg struct {
 }
 
 // Flatten tree by levels
-func traverseLevels(root []interface{}) {
+func traverseLevels(root []any) {
 	out := make(chan *msg)
 
 	go func() {
@@ -33,13 +33,13 @@ func traverseLevels(root []interface{}) {
 	fmt.Printf("Answer %v", lvls)
 }
 
-func _traverse(root []interface{}, lvl int, out chan *msg) {
+func _traverse(root []any, lvl int, out chan *msg) {
 
 	for _, e := range root {
 		switch v := e.(type) {
 		case int:
 			out <- &msg{v, lvl}
-		case []interface{}:
+		case []any:
 			_traverse(v, lvl+1, out)
 		default:
 			// interface, so go deeper???
@@ -49,6 +49,6 @@ func _traverse(root []interface{}, lvl int, out chan *msg) {
 }
 
 func TestTraverseLevels(t *testing.T) {
-	root := []interface{}{5, 12, []interface{}{1, []interface{}{8, 10, 2}, 1, 100}, []interface{}{15}, 7}
+	root := []any{5, 12, []any{1, []any{8, 10, 2}, 1, 100}, []any{15}, 7}
 	traverseLevels(root)
 }
