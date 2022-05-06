@@ -1,1 +1,0 @@
-IDEA: Hamiltonian cycle
