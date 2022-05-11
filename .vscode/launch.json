@@ -5,11 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch file",
-            "type": "go",
+            "name": "Python: Current File",
+            "type": "python",
             "request": "launch",
-            "mode": "debug",
-            "program": "${file}"
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
     ]
 }

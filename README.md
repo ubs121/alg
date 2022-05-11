@@ -1,5 +1,6 @@
-# Algorithms, data structures
+# Algorithms, data structures in python
 
-Mostly implemented in golang
+Binary search: from bisect import bisect
+Priority queue: from heapq import heappush, heappop
 
-See https://pkg.go.dev/github.com/emirpasic/gods
+list.sort() - TimSort
