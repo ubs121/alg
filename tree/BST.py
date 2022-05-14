@@ -25,12 +25,44 @@ def isValidBST(root: Optional[BstNode]) -> bool:
     return isBST(root, minSize, maxSize)
 
 def isBST(root: Optional[BstNode], minVal, maxVal:int) -> bool:
+    '''checks if a valid BST'''
     if root is None: return True
     return minVal<root.val and root.val<maxVal and isBST(root.left, minVal, root.val) and isBST(root.right, root.val, maxVal)
 
+# insert an element in BST
+def insert(root: Optional[BstNode], key, val):
+    if root:
+        if key<root.key: root.left=insert(root.left, key, val)
+        else: root.right=insert(root.right, key, val)
+    else:
+        root=BstNode(key, val)
+    return root
+
+# finding maximum element (the right-most node)
+def findMax(root: Optional[BstNode])->BstNode:
+    if not root: return None
+    if not root.right: return root
+    return findMax(root.right)
+
+# delete an element from BST
+def delete(root:Optional[BstNode], key):
+    if root:
+        if key<root.key:
+            root.left=delete(root.left, key)
+        elif key>root.key:
+            root.right=delete(root.right, key)
+        else:
+            if root.left and root.right:
+                maxNode=findMax(root.left)
+                root.key=maxNode.key
+                root.val=maxNode.val
+                root.left=delete(root.left, key)
+            else:
+                if not root.left: root=root.right
+                if not root.right: root=root.left
 
 # AA-Tree balancing: right rotation
-def skew(node):
+def aa_skew(node):
     if None in [node, node.left]: return node
     if node.left.lvl != node.lvl: return node  # no need skew
 
@@ -40,7 +72,7 @@ def skew(node):
     return lft
 
 # AA-Tree balancing: Left rotation & level increase
-def split(node):
+def aa_split(node):
     if None in [node, node.right, node.right.right]: return node
     if node.right.right.lvl != node.lvl: return node
 
@@ -51,26 +83,23 @@ def split(node):
     return rgt
 
 # AA-Tree balancing: insert a node
-def insert(node, key, val):
+def aa_insert(node, key, val):
     if node is None: return BstNode(key, val)
 
     if node.key == key: node.val = val
-    elif key < node.key:
-        node.left = insert(node.left, key, val)
-    else:
-        node.right = insert(node.right, key, val)
+    elif key < node.key: node.left = aa_insert(node.left, key, val)
+    else: node.right = aa_insert(node.right, key, val)
 
-    node = skew(node)  # in case it's backward
-    node = split(node)  # in case it's overfull
+    node = aa_skew(node)  # in case it's backward
+    node = aa_split(node)  # in case it's overfull
     return node
 
 tree=None
-
-tree=insert(tree, "d","")
-tree=insert(tree, "e","")
-tree=insert(tree, "f","")
-tree=insert(tree, "a","")
-tree=insert(tree, "b","")
-tree=insert(tree, "c","")
+tree=aa_insert(tree, "d","")
+tree=aa_insert(tree, "e","")
+tree=aa_insert(tree, "f","")
+tree=aa_insert(tree, "a","")
+tree=aa_insert(tree, "b","")
+tree=aa_insert(tree, "c","")
 
 print(tree)
