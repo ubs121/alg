@@ -8,7 +8,7 @@ class Point:
     def __init__(self, x=None, y=None):
         self.x = x
         self.y = y
-    def slopeTo(self, that)->float: # that: Point
+    def slopeTo(self, that:'Point')->float:
         if that.x==self.x:
             if that.y==self.y: return -inf
             else: return inf
