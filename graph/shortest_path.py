@@ -56,12 +56,14 @@ def dag_sp(W, source, target):
 # https://en.wikipedia.org/wiki/A*_search_algorithm
 # h is the heuristic function. h(n) estimates the cost to reach goal from node n.
 def a_star(G, source, target, h):
-    prev, Q = {}, [(h(source), None, source)]
+    pred, Q = {}, [(h(source), None, source)]
     while Q:
         d, p, u = heappop(Q)
-        if u in prev: continue
-        prev[u] = p
-        if u == target: return d - h(target), prev
+        if u in pred: continue # already visited
+        pred[u] = p # 'u' came from 'p'
+        if u == target:  
+            return d - h(target), pred
+
         for v in G[u]:
             w = G[u][v] - h(u) + h(v)
             heappush(Q, (d + w, u, v))
