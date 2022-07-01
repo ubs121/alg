@@ -1,4 +1,4 @@
-# Algorithms, data structures in python
+# Algorithms, data structures
 
 Binary search: from bisect import bisect
 Priority queue: from heapq import heappush, heappop
