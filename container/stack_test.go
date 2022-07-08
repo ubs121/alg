@@ -6,6 +6,43 @@ import (
 	"testing"
 )
 
+// Maximum number of consecutive elements preceding arr[i] such that a[j]<a[i], j<i
+func FindSpans(arr []int) []int {
+	stack := new(IntStack)
+	p := -1 // index of the closest greater element
+
+	span := make([]int, len(arr))
+	for i := 0; i < len(arr); i++ {
+		// pop all lesser elements
+		for !stack.IsEmpty() && arr[i] > arr[stack.Peek()] {
+			stack.Pop()
+		}
+
+		if stack.IsEmpty() {
+			p = -1
+		} else {
+			p = stack.Peek()
+		}
+		span[i] = i - p
+		stack.Push(i)
+	}
+	return span
+}
+
+func TestFindSpans(t *testing.T) {
+	testCases := map[string][]int{
+		"6,3,4,5,2": {1, 1, 2, 3, 1},
+	}
+
+	for tc, exp := range testCases {
+		arr := ParseIntArray(tc)
+		got := FindSpans(arr)
+		if !reflect.DeepEqual(exp, got) {
+			t.Errorf("tc [%s]: exp %v, got %v", tc, exp, got)
+		}
+	}
+}
+
 // integer stack
 type IntStack []int
 
@@ -50,39 +87,42 @@ func TestStack(t *testing.T) {
 	}
 }
 
-// Maximum number of consecutive elements preceding arr[i] such that a[j]<a[i], j<i
-func FindSpans(arr []int) []int {
-	stack := new(IntStack)
-	p := -1 // index of the closest greater element
-
-	span := make([]int, len(arr))
-	for i := 0; i < len(arr); i++ {
-		// pop all lesser elements
-		for !stack.IsEmpty() && arr[i] > arr[stack.Peek()] {
-			stack.Pop()
-		}
-
-		if stack.IsEmpty() {
-			p = -1
-		} else {
-			p = stack.Peek()
-		}
-		span[i] = i - p
-		stack.Push(i)
-	}
-	return span
+// https://leetcode.com/problems/min-stack/
+type MinStack struct {
+	elems [][]int // (elem, min) pairs
+	n     int     // number of elements
 }
 
-func TestFindSpans(t *testing.T) {
-	testCases := map[string][]int{
-		"6,3,4,5,2": {1, 1, 2, 3, 1},
-	}
+/** initialize your data structure here. */
+func NewMinStack() *MinStack {
+	return &MinStack{}
+}
 
-	for tc, exp := range testCases {
-		arr := ParseIntArray(tc)
-		got := FindSpans(arr)
-		if !reflect.DeepEqual(exp, got) {
-			t.Errorf("tc [%s]: exp %v, got %v", tc, exp, got)
+func (st *MinStack) Push(val int) {
+	if st.n == 0 {
+		st.elems = append(st.elems, []int{val, val})
+	} else {
+		min := st.GetMin()
+		if min > val {
+			min = val
 		}
+		st.elems = append(st.elems, []int{val, min})
 	}
+	st.n++
+}
+
+func (st *MinStack) Pop() {
+	// always be called on non-empty stacks.
+	st.n--
+	st.elems = st.elems[:st.n]
+}
+
+func (st *MinStack) Top() int {
+	// always be called on non-empty stacks.
+	return st.elems[st.n-1][0]
+}
+
+func (st *MinStack) GetMin() int {
+	// always be called on non-empty stacks.
+	return st.elems[st.n-1][1]
 }

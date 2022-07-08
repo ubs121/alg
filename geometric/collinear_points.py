@@ -1,55 +1,36 @@
 # https://coursera.cs.princeton.edu/algs4/assignments/collinear/specification.php
-# The problem. Given a set of n distinct points in the plane, find every (maximal) line segment that connects a subset of 4 or more of the points.
-
+from typing import List
 from cmath import inf
+from collections import defaultdict
 
-# points in the plane
-class Point:
-    def __init__(self, x=None, y=None):
-        self.x = x
-        self.y = y
-    def slopeTo(self, that:'Point')->float:
-        if that.x==self.x:
-            if that.y==self.y: return -inf
-            else: return inf
-        else:
-            if that.y == self.y: return +0.0
-            else: return (that.y-self.y)/(that.x-self.x)
-    def __repr__(self):
-        return "({},{})".format(self.x,self.y)
-   
+def slope(p:List[int], q: List[int])->float:
+    if p[0]==q[0]:
+        return -inf if p[1]==q[1] else inf
+    else:
+        return +0.0 if p[1]==q[1] else (q[1]-p[1])/(q[0]-p[0])
     
-# returns a list of collinear segments
-def collinear_points(points: list[Point])->list[list[Point]]:
-    uniqueLines=dict() # point->slope
-    def markAdded(p: Point, slope):
-        if p not in uniqueLines: uniqueLines[p]={}
-        uniqueLines[p][slope]=True
+# The problem. Given a set of n distinct points in the plane, find every (maximal) line segment that connects a subset of 4 or more of the points.
+def collinear_points(points: List[List[int]])->List:
+    segments=[]
+    p_slopes=defaultdict(list) # slope => [q1,q2,...]
+    for i, p in enumerate(points):
+        p_slopes.clear() # reset for new 'p'
 
-    def isAdded(p: Point, slope)->bool:
-        return (p in uniqueLines and slope in uniqueLines[p])
+        # for each point determine the slope it makes with p 
+        for q in points[i+1:]:
+            sl=round(slope(p, q), 6)
+            p_slopes[sl].append(q)
 
-    result=list()
-    for p in points:
-        pSlopes=dict()
-        # for each other point q, determine the slope it makes with p 
-        for q in points: 
-            if q==p: continue
-            sl=hash(round(p.slopeTo(q), 6))
-            if sl not in pSlopes: pSlopes[sl]=[q]
-            else: pSlopes[sl].append(q) # slope => [q1,q2,...]
+        # check for points with same slope
+        for ps in p_slopes.values():
+            if len(ps)>2: # found at least 3 (p=1 + q=2) points on same line
+                ps.append(p) # add 'p' itself
+                segments.append(ps)
 
-        for sl, seg in pSlopes.items():
-            if len(seg)>1: # found at least 3 points that make 2 pairs
-                if isAdded(p, sl): continue
-                seg.append(p)
-                for q in seg: markAdded(q, sl)
-                result.append(seg)
-
-    return result
+    return segments
 
 # test cases
-points=[Point(10000, 0), Point(0, 10000), Point(3000, 7000), Point(7000, 3000), Point(20000, 21000), Point(3000, 4000), Point(14000, 15000), Point(6000, 7000)]
+points=[[10000, 0], [0, 10000], [3000, 7000], [7000, 3000], [20000, 21000], [3000, 4000], [14000, 15000], [6000, 7000]]
 res=collinear_points(points)
 assert(len(res)==2)
 print(res)

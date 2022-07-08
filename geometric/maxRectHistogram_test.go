@@ -1,4 +1,4 @@
-package stack
+package geometric
 
 import (
 	alg "alg/container"

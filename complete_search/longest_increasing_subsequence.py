@@ -5,8 +5,10 @@ def lis(arr: list[int|float]):
     end = [] # end values for all lengths
     for val in arr:
         idx = bisect(end, val) # binary search
-        if idx == len(end):  end.append(val)
-        else: end[idx] = val
+        if idx == len(end):
+            end.append(val)
+        else:
+            end[idx] = val
     return len(end)
 
 # testing

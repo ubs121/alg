@@ -12,19 +12,19 @@ import (
 
 func main() {
 
-	// inFile, err := os.Open("testCase13.txt")
-	// checkError(err)
-	// defer inFile.Close()
+	inFile, err := os.Open("testCase13.txt")
+	checkError(err)
+	defer inFile.Close()
 
-	rdr := bufio.NewReader(os.Stdin) //os.Stdin
+	rdr := bufio.NewReader(inFile) //os.Stdin
 
 	// read 'n'
-	line, err := rdr.ReadString('\n')
+	line, _ := rdr.ReadString('\n')
 	n, err := strconv.Atoi(strings.TrimRight(line, "\n\r"))
 	checkError(err)
 
 	// read array 'a'
-	line, err = rdr.ReadString('\n')                             // scan whole line
+	line, _ = rdr.ReadString('\n')                               // scan whole line
 	aTemp := strings.Split(strings.TrimRight(line, "\r\n"), " ") // split by space
 
 	arr := make([]int, n)

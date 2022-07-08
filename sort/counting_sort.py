@@ -1,9 +1,10 @@
 from collections import defaultdict
+from typing import List
 
-def counting_sort(A: list, key=lambda x: x):
+def counting_sort(arr: List[int], key=lambda x: x):
     B, C = [], defaultdict(list)
 
-    for x in A:
+    for x in arr:
         C[key(x)].append(x)
 
     for k in range(min(C), max(C)+1):

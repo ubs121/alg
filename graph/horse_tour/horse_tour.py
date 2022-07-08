@@ -9,7 +9,7 @@ class HorseTour:
         if not self.done and 0<=x<8 and 0<=y<8 and self.board[x][y]==0:
             self.board[x][y]=n # mark it visited
             if n==64:
-                self.printBoard()
+                self.print_board()
                 self.done=True
                 return
             self.move(x-1, y+2, n+1)
@@ -20,13 +20,13 @@ class HorseTour:
             self.move(x+2, y-1, n+1)
             self.move(x+2, y+1, n+1)
             self.move(x+1, y+2, n+1)
-            
+
             self.board[x][y] = 0
 
-    def printBoard(self):
+    def print_board(self):
         for i in range(8):
             for j in range(8):
-                print("{}".format(self.board[i][j]).ljust(3), end = ' ')
+                print(f"{self.board[i][j]}".ljust(3), end = ' ')
             print("")
 
 # testing 
