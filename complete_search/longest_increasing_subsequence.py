@@ -4,7 +4,7 @@ def lis(arr: list[int|float]):
     '''Longest increasing subsequence'''
     end = [] # end values for all lengths
     for val in arr:
-        idx = bisect(end, val) # binary search
+        idx = bisect(end, val) # binary search, or bisect_left if need '<'
         if idx == len(end):
             end.append(val)
         else:
