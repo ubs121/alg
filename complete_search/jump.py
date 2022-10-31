@@ -3,7 +3,7 @@ from typing import List
 
 inf=float('inf')
 
-def jump_dp(nums: List[int]) -> int:
+def jump_dp(nums: List[int]) -> float:
     if len(nums)==0 or nums[0]==0:
         return inf
 
