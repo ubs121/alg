@@ -16,7 +16,7 @@ class Solution(object):
 
         for i in range(n-1, -1, -1):
             for j in range(m-1, -1, -1):
-                if s1[i] == s2[j]: 
+                if s1[i] == s2[j]:
                     # we have dp[i][j] = dp[i+1][j+1] as we can ignore these two characters.
                     dp[i][j] = dp[i+1][j+1]
                 else: 
