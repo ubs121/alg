@@ -1,7 +1,7 @@
 package search
 
 import (
-	"alg/container"
+	"alg/common"
 	"strings"
 	"testing"
 )
@@ -172,8 +172,8 @@ func TestSolve(t *testing.T) {
 
 	for tc, exp := range testCases {
 		arrays := strings.Split(tc, " ")
-		a := container.ParseIntArray(arrays[0])
-		b := container.ParseIntArray(arrays[1])
+		a := common.ParseIntArray(arrays[0])
+		b := common.ParseIntArray(arrays[1])
 
 		got := findMedianSortedArrays(a, b)
 		if got != exp {

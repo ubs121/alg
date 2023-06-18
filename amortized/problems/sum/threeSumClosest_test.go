@@ -1,7 +1,7 @@
 package main
 
 import (
-	alg "alg/container"
+	alg "alg/common"
 	"math"
 	"sort"
 	"strconv"

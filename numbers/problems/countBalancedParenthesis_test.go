@@ -1,8 +1,7 @@
-package search
+package numbers
 
 import (
-	"alg/container"
-	"alg/numbers"
+	"alg/common"
 	"fmt"
 	"testing"
 )
@@ -11,7 +10,7 @@ import (
 func countValidParenthesis(l, r int) int {
 	// odd brakets divides the whole string, so don't put in the middle
 	// no nesting because it divides
-	m := numbers.Min(l, r)
+	m := common.Min(l, r)
 	sol := m * (m + 1) / 2
 	return sol
 }
@@ -38,7 +37,7 @@ func TestCoundValidParenthesis(t *testing.T) {
 	}
 
 	for tc, exp := range testCases {
-		inpArr := container.ParseIntArray(tc)
+		inpArr := common.ParseIntArray(tc)
 		got := countValidParenthesis(inpArr[0], inpArr[1])
 		if got != exp {
 			t.Errorf("tc [%s]: exp %d, got %d", tc, exp, got)

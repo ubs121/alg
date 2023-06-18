@@ -1,7 +1,7 @@
 package search
 
 import (
-	alg "alg/container"
+	alg "alg/common"
 	"testing"
 )
 

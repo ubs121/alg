@@ -1,7 +1,7 @@
 package numbers
 
 import (
-	alg "alg/container"
+	alg "alg/common"
 	"fmt"
 	"math"
 	"math/bits"

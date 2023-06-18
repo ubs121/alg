@@ -1,7 +1,7 @@
 package geometric
 
 import (
-	alg "alg/container"
+	common "alg/common"
 	"strings"
 	"testing"
 )
@@ -53,7 +53,7 @@ func TestMaxRectUnderHistogram(t *testing.T) {
 		"1,2,3,4,5,6": 12,
 	}
 	for tc, exp := range testCases {
-		arr := alg.ParseIntArray(tc)
+		arr := common.ParseIntArray(tc)
 		got := maxRectUnderHistogram(arr)
 		if got != exp {
 			t.Errorf("tc %s: exp %d, got %d", tc, exp, got)

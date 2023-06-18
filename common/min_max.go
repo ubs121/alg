@@ -1,4 +1,4 @@
-package numbers
+package common
 
 type Number interface {
 	int | float64

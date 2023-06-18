@@ -1,7 +1,7 @@
 package sort
 
 import (
-	"alg/container"
+	"alg/common"
 	"strconv"
 	"strings"
 	"testing"
@@ -60,7 +60,7 @@ func TestSearch(t *testing.T) {
 
 	for tc, exp := range testCases {
 		splits := strings.Split(tc, "|")
-		arr := container.ParseIntArray(splits[0])
+		arr := common.ParseIntArray(splits[0])
 		target, _ := strconv.Atoi(splits[1])
 		got := searchInRotatedArray(arr, int(target))
 		if got != exp {

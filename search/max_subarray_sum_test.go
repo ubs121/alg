@@ -1,12 +1,46 @@
 package search
 
 import (
-	"fmt"
 	"math"
 	"testing"
 )
 
 // https://leetcode.com/problems/maximum-subarray/
+func maxSubArray2(nums []int) int {
+	maxSum := nums[0]
+	currentSum := nums[0]
+
+	for i := 1; i < len(nums); i++ {
+		currentSum += nums[i]
+		if currentSum < nums[i] {
+			currentSum = nums[i]
+		}
+		if currentSum > maxSum {
+			maxSum = currentSum
+		}
+	}
+
+	return maxSum
+}
+
+func TestMaxSubarray(t *testing.T) {
+	testCases := []struct {
+		name string
+		arr  []int
+		exp  int
+	}{
+		{arr: []int{1, 1, -20, 1, 20}, exp: 21},
+		{arr: []int{-2, 1, -3, 4, -1, 2, 1, -5, 4}, exp: 6},
+		{arr: []int{5, 4, -1, 7, 8}, exp: 23},
+	}
+	for _, tc := range testCases {
+		got := maxSubArray2(tc.arr)
+		if got != tc.exp {
+			t.Errorf("exp %d, got %d\n", tc.exp, got)
+		}
+	}
+}
+
 func maxSubArray(nums []int) int {
 	return maxSubArraySum(nums, 0, len(nums)-1)
 }
@@ -59,10 +93,4 @@ func max(a, b int) int {
 		return a
 	}
 	return b
-}
-
-func TestMaxSubarray(t *testing.T) {
-	arr := []int{1, 1, -20, 1, 20}
-	max_sum := maxSubArray(arr)
-	fmt.Printf("Maximum contiguous sum is %d\n", max_sum)
 }
