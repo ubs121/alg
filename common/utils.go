@@ -7,6 +7,15 @@ import (
 	"strings"
 )
 
+// Returns sum
+func Sum(nums []int) int {
+	s := 0
+	for _, num := range nums {
+		s += num
+	}
+	return s
+}
+
 // IndexMax returns max value indexes
 func IndexMax(arr []int) []int {
 	var maxes []int
@@ -27,8 +36,11 @@ func IndexMax(arr []int) []int {
 
 // Reverse array elements
 func Reverse(arr []int) {
-	for i := 0; i < len(arr)/2; i++ {
-		arr[len(arr)-i-1], arr[i] = arr[i], arr[len(arr)-i-1]
+	i, j := 0, len(arr)-1
+	for i < j {
+		arr[i], arr[j] = arr[j], arr[i]
+		i++
+		j--
 	}
 }
 

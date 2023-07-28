@@ -5,6 +5,11 @@ import (
 	"testing"
 )
 
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
 // https://leetcode.com/problems/partition-list/
 func partition(head *ListNode, x int) *ListNode {
 	var lt, gt, ltHead, gtHead *ListNode

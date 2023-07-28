@@ -2,6 +2,7 @@ package search
 
 import (
 	"alg/common"
+	"alg/common/numbers"
 	"math"
 	"strings"
 	"testing"
@@ -15,9 +16,9 @@ func minQuery(sparseTable [][]int, l, r int) int {
 
 // Builds a sparse table for Range Minimum Query
 func buildSparseTable(arr []int) [][]int {
-	n := len(arr)                   // # of columns
-	h := int(common.Log2Int(n)) + 1 // # of rows (height)
-	st := make([][]int, h)          // sparse table, st[k][j]=min(range(j:j+2^k))
+	n := len(arr)                    // # of columns
+	h := int(numbers.Log2Int(n)) + 1 // # of rows (height)
+	st := make([][]int, h)           // sparse table, st[k][j]=min(range(j:j+2^k))
 
 	// base case: 2^0
 	st[0] = make([]int, n)
